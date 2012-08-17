@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400" prefWidth="320" xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="org.miernik.jajeczko.presenter.MainPresenter" >
+    <children>
+        <MenuBar AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu text="%MenuFile">
+                    <items>
+                        <MenuItem fx:id="menuClose" text="%MenuClose" />
+                    </items>
+                </Menu>
+                <Menu text="%MenuView">
+                    <items>
+                        <MenuItem fx:id="menuTodayToDo" text="%MenuTodayToDo" />
+                        <MenuItem fx:id="menuProjects" text="%MenuProjects" />
+                        <MenuItem text="%MenuSomeday" />
+                    </items>
+                </Menu>
+                <Menu text="%MenuHelp">
+                    <items>
+                        <MenuItem fx:id="menuAbout" text="%MenuAbout" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <AnchorPane fx:id="mainContent" AnchorPane.topAnchor="25.0" 
+                    AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.bottomAnchor="0.0">
+            <children>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

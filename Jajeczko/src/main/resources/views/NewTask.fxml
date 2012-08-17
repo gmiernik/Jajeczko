@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="80" prefWidth="200" xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="org.miernik.jajeczko.presenter.NewTaskPresenter" >
+    <children>
+        <HBox>
+            <children>
+                <Label text="TaskName" />
+                <TextField />
+            </children>
+        </HBox>
+        <HBox>
+            <children>
+                <Button text="Add" />
+                <Button text="Cancel" />
+            </children>
+        </HBox>
+    </children>
+</VBox>
