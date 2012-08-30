@@ -12,5 +12,11 @@ import org.miernik.jfxlib.presenter.AbstractPresenter;
  * @author Miernik
  */
 public class ProjectsPresenter extends AbstractPresenter<JajeczkoService> {
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

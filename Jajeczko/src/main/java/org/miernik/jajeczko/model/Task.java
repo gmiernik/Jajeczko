@@ -2,8 +2,6 @@ package org.miernik.jajeczko.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 /**
  * @author Miernik
@@ -11,51 +9,68 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class Task {
 
-    private Category category;
-    private SimpleIntegerProperty id = new SimpleIntegerProperty();
-    private SimpleStringProperty name = new SimpleStringProperty();
-    private Status status;
-    private List<Egg> eggs;
+	private Category category;
+	private int id;
+	private String name;
+	private Status status;
+	private List<Egg> eggs;
 
-    public Task(int id, String name) {
-        this.id.set(id);
-        this.name.set(name);
-        this.eggs = new ArrayList<Egg>();
-    }
+	public Task() {
+		this.eggs = new ArrayList<Egg>();
+	}
 
-    public Category getCategory() {
-        return category;
-    }
+	public Task(String name) {
+		this();
+		this.name = name;
+	}
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+	public Category getCategory() {
+		return category;
+	}
 
-    public int getId() {
-        return id.get();
-    }
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
-    public void setId(int id) {
-        this.id.set(id);
-    }
+	public int getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name.get();
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name.set(name);
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Status getStatus() {
-        return status;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-    
-    public void addEgg(Egg e) {
-    	this.eggs.add(e);
-    }
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public void addEgg(Egg e) {
+		this.eggs.add(e);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Task) {
+			Task t = (Task)obj;
+			if (getName()==t.getName()) {
+				if (getId()==0 || t.getId()==0)
+					return true;
+				else if (getId()==t.getId())
+					return true;
+			}
+		}
+		return super.equals(obj);
+	}
 }

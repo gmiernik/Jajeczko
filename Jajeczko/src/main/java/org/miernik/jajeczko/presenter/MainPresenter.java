@@ -108,7 +108,6 @@ public class MainPresenter extends AbstractMainPresenter<JajeczkoService> implem
 
     @Override
     public void show() {
-        super.show();
         setMainContent(getTodayToDo());
     }
     
