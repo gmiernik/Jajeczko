@@ -40,6 +40,7 @@ public class TimerPresenter extends ModalWindowPresenter<JajeczkoService>
 	public void show() {
 		super.show();
 		if (!initiated) {
+			getStage().getScene().getStylesheets().add("styles/stylesheet.css");
 			timer = getService().getTimer();
 			getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 

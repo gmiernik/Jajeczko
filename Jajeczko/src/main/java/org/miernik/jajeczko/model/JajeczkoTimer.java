@@ -109,4 +109,13 @@ public class JajeczkoTimer {
 		tickingHandler = handler;
 	}
 
+	public void dispose() {
+		if (status!=TimerStatus.DoNothink)
+			stop();
+		timer.cancel();
+		timer = null;
+		status = null;
+		finishWorkHandler = null;
+		tickingHandler = null;
+	}
 }

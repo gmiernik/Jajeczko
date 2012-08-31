@@ -39,3 +39,22 @@
 #TodayToDo #pendingButton {
     -fx-graphic: url('../images/hand_24.png');
 }
+
+#Timer {
+	-fx-padding: 5;
+	-fx-background-color: gray;
+}
+
+#Timer VBox  {
+	-fx-text-alignment: center;
+}
+
+#Timer Label {
+	-fx-font-size: 26px;
+	-fx-padding: 5;
+	-fx-text-alignment: center;
+}
+
+#Timer #stopButton {
+	-fx-text-alignment: center;	
+}

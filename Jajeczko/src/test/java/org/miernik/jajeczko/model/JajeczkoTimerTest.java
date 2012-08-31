@@ -100,40 +100,43 @@ public class JajeczkoTimerTest extends TestCase {
 
 		assertEquals(time, timer.getCurrentTime());
 	}
-	
+
 	@Test
 	public void testIsRunning() {
 		final int numSeconds = 2;
 
 		timer.runTimer(TimerStatus.ShortBreak, numSeconds);
 		assertTrue(timer.isRunning());
-		
+
 		timer.stop();
 		assertFalse(timer.isRunning());
 	}
 
-	
-	
+	@Test
+	public void testDispose() {
+		timer.dispose();
+
+		assertNull(timer.getStatus());
+	}
+
 	@Test
 	public void testSetOnFinishedWork() throws InterruptedException {
 		final int numSeconds = 1;
 		final TestResult result = new TestResult();
-		
+
 		assertEquals(0, result.value);
 		timer.setOnFinishWork(new TimerHandler() {
-			
+
 			@Override
 			public void handle() {
 				result.value = 1;
 			}
 		});
 		timer.runTimer(TimerStatus.WorkingTime, numSeconds);
-		
+
 		Thread.sleep(1050);
-		
+
 		assertEquals(1, result.value);
 	}
-	
-	
 
 }
