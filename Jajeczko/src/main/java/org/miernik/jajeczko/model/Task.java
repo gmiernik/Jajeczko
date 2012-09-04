@@ -1,7 +1,13 @@
 package org.miernik.jajeczko.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * @author Miernik
@@ -11,17 +17,19 @@ public class Task {
 
 	private Category category;
 	private int id;
-	private String name;
+	private StringProperty name = new SimpleStringProperty();
 	private Status status;
 	private List<Egg> eggs;
+	private IntegerProperty numberOfEggs = new SimpleIntegerProperty();
 
 	public Task() {
-		this.eggs = new ArrayList<Egg>();
+		eggs = new ArrayList<Egg>();
+		numberOfEggs.set(eggs.size());
 	}
 
 	public Task(String name) {
 		this();
-		this.name = name;
+		this.name.set(name);
 	}
 
 	public Category getCategory() {
@@ -41,11 +49,11 @@ public class Task {
 	}
 
 	public String getName() {
-		return name;
+		return name.get();
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name.set(name);
 	}
 
 	public Status getStatus() {
@@ -56,8 +64,15 @@ public class Task {
 		this.status = status;
 	}
 
-	public void addEgg(Egg e) {
-		this.eggs.add(e);
+	//TODO: prepare test for the addEgg method
+	public void addEgg() {
+		Egg egg = new Egg();
+		Date startTime = new Date();
+		startTime.setTime(startTime.getTime()-(25*60000));
+		egg.setStartTime(startTime);
+		eggs.add(egg);
+		setName(getName()+"x");
+		numberOfEggs.set(eggs.size());
 	}
 	
 	@Override
@@ -72,5 +87,13 @@ public class Task {
 			}
 		}
 		return super.equals(obj);
+	}
+	
+	public int getNumberOfEggs() {
+		return numberOfEggs.get();
+	}
+	
+	public IntegerProperty numberOfEggsProperty() {
+		return numberOfEggs;
 	}
 }

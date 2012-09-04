@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import org.miernik.jajeczko.JajeczkoService;
+import org.miernik.jajeczko.event.FinishWorkEvent;
+import org.miernik.jfxlib.event.EventListener;
 import org.miernik.jfxlib.presenter.AbstractMainPresenter;
 import org.miernik.jfxlib.presenter.Presenter;
 
@@ -121,6 +123,13 @@ public class MainPresenter extends AbstractMainPresenter<JajeczkoService>
 				@Override
 				public void handle(WindowEvent arg0) {
 					getService().getTimer().dispose();
+				}
+			});
+			getEventBus().addListener(new EventListener<FinishWorkEvent>() {
+
+				@Override
+				public void performed(FinishWorkEvent event) {
+					getStage().show();
 				}
 			});
 			initiated = true;

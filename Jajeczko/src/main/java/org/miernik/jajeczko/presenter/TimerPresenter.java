@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.stage.WindowEvent;
 
 import org.miernik.jajeczko.JajeczkoService;
+import org.miernik.jajeczko.event.FinishWorkEvent;
 import org.miernik.jajeczko.model.JajeczkoTimer;
 import org.miernik.jajeczko.model.Task;
 import org.miernik.jajeczko.model.TimerHandler;
@@ -62,6 +63,20 @@ public class TimerPresenter extends ModalWindowPresenter<JajeczkoService>
 									"mm:ss");
 							timerLabel.setText(sdf.format(timer
 									.getCurrentTime()));
+						}
+					});
+				}
+			});
+			timer.setOnFinishWork(new TimerHandler() {
+				
+				@Override
+				public void handle() {
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							getEventBus().fireEvent(new FinishWorkEvent(timer.getTask()));
+							getStage().close();
 						}
 					});
 				}

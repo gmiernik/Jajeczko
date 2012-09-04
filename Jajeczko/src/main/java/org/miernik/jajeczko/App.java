@@ -6,7 +6,7 @@ package org.miernik.jajeczko;
 
 import javafx.stage.Stage;
 
-import org.miernik.jajeczko.event.RunTimerEvent;
+import org.miernik.jajeczko.event.StartWorkEvent;
 import org.miernik.jajeczko.presenter.MainPresenter;
 import org.miernik.jajeczko.presenter.NewTaskPresenter;
 import org.miernik.jajeczko.presenter.ProjectsPresenter;
@@ -29,10 +29,10 @@ public class App extends MVPApplication<JajeczkoService> {
 		launch(args);
 	}
 
-	final private EventListener<RunTimerEvent> timerListener = new EventListener<RunTimerEvent>() {
+	final private EventListener<StartWorkEvent> timerListener = new EventListener<StartWorkEvent>() {
 
 		@Override
-		public void performed(RunTimerEvent e) {
+		public void performed(StartWorkEvent e) {
 			getTimerPresenter().start(e.getTask());
 		}
 	};

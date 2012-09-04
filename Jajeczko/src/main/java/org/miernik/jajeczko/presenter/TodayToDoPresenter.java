@@ -17,11 +17,17 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
 import org.miernik.jajeczko.JajeczkoService;
-import org.miernik.jajeczko.event.RunTimerEvent;
+import org.miernik.jajeczko.event.FinishWorkEvent;
+import org.miernik.jajeczko.event.StartWorkEvent;
 import org.miernik.jajeczko.model.Task;
+import org.miernik.jfxlib.dialogs.MessageBox;
+import org.miernik.jfxlib.event.EventListener;
 import org.miernik.jfxlib.presenter.AbstractPresenter;
 
 /**
@@ -32,6 +38,8 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 		implements Initializable {
 
 	@FXML
+	private Pane todayToDo;
+	@FXML
 	private TableView<Task> taskTable;
 	@FXML
 	private Button addButton;
@@ -39,6 +47,7 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 	private Button startButton;
 	private ObservableList<Task> tasks;
 	private TableColumn name2;
+	private boolean initiated;
 
 	public ObservableList<Task> getTasks() {
 		if (tasks == null)
@@ -48,17 +57,44 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 
 	@Override
 	public void show() {
-		taskTable.setItems(getTasks());
+		if (!initiated) {
+			taskTable.setItems(getTasks());
+			getEventBus().addListener(new EventListener<FinishWorkEvent>() {
+
+				@Override
+				public void performed(FinishWorkEvent event) {
+					// TODO: improve refresh method
+					System.out.println("refreshed ");
+				}
+			});
+			initiated = true;
+		}
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		todayToDo.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent arg0) {
+				if (arg0.getCode() == KeyCode.INSERT) {
+					fireAction("NewTask");
+				}
+			}
+		});
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				Task t = taskTable.getSelectionModel().getSelectedItem();
-				getEventBus().fireEvent(new RunTimerEvent(t));
+				if (t == null)
+					// TODO: prepare method to read text from Resource Bundle
+					(new MessageBox("Start zegara",
+							"Musisz wybrać zadanie do realizacji.")).show();
+				else {
+					getEventBus().fireEvent(new StartWorkEvent(t));
+					todayToDo.getScene().getWindow().hide();
+				}
 			}
 		});
 		addButton.setOnAction(new EventHandler<ActionEvent>() {

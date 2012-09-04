@@ -1,6 +1,6 @@
 package org.miernik.jajeczko;
 
-import org.miernik.jajeczko.event.RunTimerEvent;
+import org.miernik.jajeczko.event.StartWorkEvent;
 import org.miernik.jajeczko.model.Task;
 import org.miernik.jfxlib.event.Event;
 import org.miernik.jfxlib.event.EventBus;

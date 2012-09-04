@@ -26,9 +26,13 @@ public class JajeczkoTimer {
 		return task;
 	}
 
-	public void startWork(Task t) {
+	protected void startWork(Task t, int numberOfSeconds) {
 		this.task = t;
-		runTimer(TimerStatus.WorkingTime, NUM_SECONDS_WORKING_TIME);
+		runTimer(TimerStatus.WorkingTime, numberOfSeconds);
+	}
+	
+	public void startWork(Task t) {
+		startWork(t, NUM_SECONDS_WORKING_TIME);
 	}
 
 	public void startShortBreak() {
@@ -85,6 +89,7 @@ public class JajeczkoTimer {
 					stop();
 					switch (lastStatus) {
 					case WorkingTime:
+						getTask().addEgg();
 						if (finishWorkHandler != null)
 							finishWorkHandler.handle();
 						break;

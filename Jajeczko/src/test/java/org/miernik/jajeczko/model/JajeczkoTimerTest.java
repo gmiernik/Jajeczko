@@ -120,8 +120,22 @@ public class JajeczkoTimerTest extends TestCase {
 	}
 
 	@Test
+	public void testFinishedWorkAddEgg() throws InterruptedException {
+		final int numSeconds = 1;
+		final Task t = new Task();
+
+		assertEquals(0, t.getNumberOfEggs());
+		timer.startWork(t, numSeconds);
+
+		Thread.sleep(1050);
+
+		assertEquals(1, t.getNumberOfEggs());
+	}
+	
+	@Test
 	public void testSetOnFinishedWork() throws InterruptedException {
 		final int numSeconds = 1;
+		final Task t = new Task();
 		final TestResult result = new TestResult();
 
 		assertEquals(0, result.value);
@@ -132,7 +146,7 @@ public class JajeczkoTimerTest extends TestCase {
 				result.value = 1;
 			}
 		});
-		timer.runTimer(TimerStatus.WorkingTime, numSeconds);
+		timer.startWork(t, numSeconds);
 
 		Thread.sleep(1050);
 
