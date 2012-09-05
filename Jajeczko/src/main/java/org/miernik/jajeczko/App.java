@@ -4,6 +4,7 @@
  */
 package org.miernik.jajeczko;
 
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import org.miernik.jajeczko.event.StartWorkEvent;
@@ -62,7 +63,7 @@ public class App extends MVPApplication<JajeczkoService> {
 	public void start(final Stage primaryStage) {
 		// add listeners
 		getEventBus().addListener(timerListener);
-		
+		primaryStage.getIcons().add(new Image("images/jajeczko2.png"));
 		primaryStage.setTitle("Jajeczko");
 		getMainPresenter().setMainView(primaryStage);
 		primaryStage.show();
