@@ -1,16 +1,10 @@
 package org.miernik.jajeczko.model;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
-
-import javafx.scene.layout.AnchorPane;
 import junit.framework.TestCase;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.miernik.jajeczko.presenter.TimerPresenter;
 
 public class JajeczkoTimerTest extends TestCase {
 
@@ -57,7 +51,6 @@ public class JajeczkoTimerTest extends TestCase {
 
 	@Test
 	public void testStopStart() {
-		final int numSeconds = 10;
 		final Task t = new Task();
 
 		timer.startWork(t);

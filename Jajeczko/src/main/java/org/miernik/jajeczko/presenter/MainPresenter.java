@@ -6,9 +6,6 @@ package org.miernik.jajeczko.presenter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +16,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
 import org.miernik.jajeczko.JajeczkoService;
 import org.miernik.jajeczko.event.FinishWorkEvent;
 import org.miernik.jfxlib.event.EventListener;

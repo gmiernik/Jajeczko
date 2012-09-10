@@ -13,15 +13,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
-
 import org.miernik.jajeczko.JajeczkoService;
 import org.miernik.jajeczko.event.FinishWorkEvent;
 import org.miernik.jajeczko.event.StartWorkEvent;
@@ -46,7 +41,6 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 	@FXML
 	private Button startButton;
 	private ObservableList<Task> tasks;
-	private TableColumn name2;
 	private boolean initiated;
 
 	public ObservableList<Task> getTasks() {
@@ -129,8 +123,6 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 		TableView.TableViewSelectionModel<Task> s = taskTable
 				.getSelectionModel();
 		s.select(newTask);
-		taskTable.edit(s.getSelectedIndex(), name2);
-
 	}
 
 }

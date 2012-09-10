@@ -2,26 +2,18 @@ package org.miernik.jajeczko.presenter;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.WindowEvent;
-
 import org.miernik.jajeczko.JajeczkoService;
 import org.miernik.jajeczko.event.FinishWorkEvent;
 import org.miernik.jajeczko.model.JajeczkoTimer;
 import org.miernik.jajeczko.model.Task;
 import org.miernik.jajeczko.model.TimerHandler;
-import org.miernik.jfxlib.presenter.AbstractPresenter;
 import org.miernik.jfxlib.presenter.ModalWindowPresenter;
 
 public class TimerPresenter extends ModalWindowPresenter<JajeczkoService>

@@ -1,15 +1,12 @@
 package org.miernik.jajeczko;
 
-import org.miernik.jajeczko.event.StartWorkEvent;
-import org.miernik.jajeczko.model.Task;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import org.miernik.jfxlib.event.Event;
 import org.miernik.jfxlib.event.EventBus;
 import org.miernik.jfxlib.event.EventListener;
 import org.miernik.jfxlib.event.SimpleEventBus;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.

@@ -1,16 +1,8 @@
 package org.miernik.jajeczko.presenter;
 
-import java.util.Date;
-
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-
 import org.jodah.concurrentunit.junit.ConcurrentTestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -20,8 +12,6 @@ import org.miernik.jajeczko.JajeczkoService;
 import org.miernik.jajeczko.JajeczkoServiceMemory;
 import org.miernik.jajeczko.model.Task;
 import org.miernik.jajeczko.model.TimerStatus;
-import org.miernik.jfxlib.Service;
-import org.miernik.jfxlib.presenter.ModalWindowPresenter;
 
 public class TimerPresenterTest extends ConcurrentTestCase {
 
