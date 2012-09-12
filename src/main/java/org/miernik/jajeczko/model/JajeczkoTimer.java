@@ -93,6 +93,8 @@ public class JajeczkoTimer {
 						if (finishWorkHandler != null)
 							finishWorkHandler.handle();
 						break;
+					default:
+						break;
 					}
 				}
 			}
