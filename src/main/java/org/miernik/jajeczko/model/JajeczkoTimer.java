@@ -3,6 +3,7 @@ package org.miernik.jajeczko.model;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.scene.media.AudioClip;
 
 public class JajeczkoTimer {
 
@@ -16,10 +17,16 @@ public class JajeczkoTimer {
 	private TimerHandler tickingHandler;
 	private Task task;
 	private TimerTask timerTask;
+	private AudioClip tickingClip;
+	
+	protected AudioClip getTickingClip() {
+		return tickingClip;
+	}
 
 	public JajeczkoTimer() {
 		status = TimerStatus.DoNothink;
 		timer = new Timer();
+		tickingClip = new AudioClip(getClass().getResource("/audio/clock_ticking.mp3").toString());
 	}
 
 	public Task getTask() {
@@ -68,6 +75,10 @@ public class JajeczkoTimer {
 	protected int getTimeCounter() {
 		return this.timeCounter;
 	}
+	
+	protected void playTicking() {
+		tickingClip.play();
+	}	
 
 	protected void runTimer(TimerStatus newStatus, int seconds) {
 		if (status != TimerStatus.DoNothink)
@@ -80,6 +91,7 @@ public class JajeczkoTimer {
 				if (status == TimerStatus.DoNothink)
 					throw new IllegalStateException(
 							"Timer should not have status DO_NOTHINK when is running.");
+				playTicking();
 				if (tickingHandler!=null)
 					tickingHandler.handle();
 				//TODO: prepare test for setOnTicking method

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="App" default="default" basedir="target" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="/usr/java/jdk1.7.0_06/lib/ant-javafx.jar" />
+
+	<property name="application.title" value="Jajeczko"/>
+
+
+	<target name="default">
+		<fx:jar destfile="${basedir}/dist/jajeczko.jar">
+			<!-- Details about application -->
+			<fx:application name="${application.title}" mainClass="org.miernik.jajeczko.App" />
+
+			<!-- Define what auxilary resources are needed -->
+			<fx:resources>
+				<fx:fileset dir="${basedir}" includes="lib/*.jar"  />
+			</fx:resources>
+
+			<!-- What to include into result jar file?
+		         Everything in the build tree -->
+			<fileset dir="${basedir}/classes" />
+
+			<!-- Customize jar manifest (optional) -->
+			<manifest>
+				<attribute name="Implementation-Vendor" value="Grzegorz Miernik" />
+				<attribute name="Implementation-Version" value="0.1" />
+			</manifest>
+		</fx:jar>
+
+		<fx:deploy width="600" height="400" outdir="${basedir}/dist2" outfile="jajeczko" nativeBundles="all">
+			<fx:application name="${application.title}" mainClass="${javafx.main.class}" />
+			<fx:resources>
+				<fx:fileset dir="${basedir}/dist" includes="*.jar" />
+				<fx:fileset dir="${basedir}" includes="lib/*.jar" />
+			</fx:resources>
+			<fx:info title="${application.title}" />
+		</fx:deploy>
+	</target>
+</project>
+

@@ -45,11 +45,13 @@ public class TimerPresenterTest extends ConcurrentTestCase {
 
 				threadAssertEquals(t, service.getTimer().getTask());
 				threadAssertEquals(TimerStatus.WorkingTime, service.getTimer().getStatus());
+				
+				p.close();
 
 				resume();
 			}
 		});
-		threadWait(1000);
+		threadWait(1500);
 	}
 
 }

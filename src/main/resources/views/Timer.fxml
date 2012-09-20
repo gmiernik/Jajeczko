@@ -21,6 +21,6 @@
 			<Insets left="8" right="8" top="8" bottom="8" />
 		</padding>
 		<Label fx:id="timerLabel" />
-		<Button fx:id="stopButton" text="%stopButton" />
+		<Button fx:id="actionButton" text="%stopButton" />
 	</VBox>
 </AnchorPane>

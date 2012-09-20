@@ -1,6 +1,8 @@
 package org.miernik.jajeczko.model;
 
 import java.util.Date;
+
+import javafx.embed.swing.JFXPanel;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +19,8 @@ public class JajeczkoTimerTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		timer = new JajeczkoTimer();
+		timer.getTickingClip().setVolume(0);
+		new JFXPanel();
 	}
 
 	@After
@@ -32,7 +36,8 @@ public class JajeczkoTimerTest extends TestCase {
 
 		timer.startWork(t);
 
-		assertEquals(numSeconds_25minutes, timer.getTimeCounter());
+		assertTrue(numSeconds_25minutes == timer.getTimeCounter()
+				|| numSeconds_25minutes - 1 == timer.getTimeCounter());
 		assertEquals(status, timer.getStatus());
 	}
 
@@ -124,7 +129,7 @@ public class JajeczkoTimerTest extends TestCase {
 
 		assertEquals(1, t.getNumberOfEggs());
 	}
-	
+
 	@Test
 	public void testSetOnFinishedWork() throws InterruptedException {
 		final int numSeconds = 1;
@@ -144,6 +149,13 @@ public class JajeczkoTimerTest extends TestCase {
 		Thread.sleep(1050);
 
 		assertEquals(1, result.value);
+	}
+
+	@Test
+	public void testPlayClockTicking() throws InterruptedException {
+
+		timer.playTicking();
+		assertTrue(timer.getTickingClip().isPlaying());
 	}
 
 }
