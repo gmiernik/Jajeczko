@@ -33,12 +33,13 @@ public class TimerPresenter extends ModalWindowPresenter<JajeczkoService>
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		actionButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (timer.isRunning()) {
 					timer.stop();
-					actionButton.setText("start"); //TODO: replace to use ResourceBundle
+					actionButton.setText("start"); // TODO: replace to use
+													// ResourceBundle
 				} else {
 					timer.startWork(task);
 					actionButton.setText("stop");
@@ -70,8 +71,10 @@ public class TimerPresenter extends ModalWindowPresenter<JajeczkoService>
 						@Override
 						public void run() {
 							SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-							timerLabel.setText(sdf.format(timer
-									.getCurrentTime()));
+							if (timerLabel != null) {
+								timerLabel.setText(sdf.format(timer
+										.getCurrentTime()));
+							}
 						}
 					});
 				}
@@ -93,7 +96,6 @@ public class TimerPresenter extends ModalWindowPresenter<JajeczkoService>
 			initiated = true;
 		}
 	}
-		
 
 	protected void close() {
 		if (timer.isRunning())
