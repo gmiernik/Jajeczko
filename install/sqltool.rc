@@ -1,0 +1,4 @@
+urlid jajeczko-prod
+url jdbc:hsqldb:file:../data/jajeczkodb;shutdown=true
+username SA
+password
