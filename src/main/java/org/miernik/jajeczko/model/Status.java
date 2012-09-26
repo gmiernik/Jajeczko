@@ -14,38 +14,51 @@ import javafx.beans.property.SimpleStringProperty;
  * @version 1.0 @created 22-cze-2012 16:41:40
  */
 @Entity
-@Table(name="STATUSES")
+@Table(name = "STATUSES")
 public class Status {
-	
+
 	public static Status OPEN = new Status(1, "Open");
 	public static Status APPROVAL = new Status(2, "Approval");
 
-    private int id;
-    private SimpleStringProperty name = new SimpleStringProperty();
-    
-    private Status(int id, String name) {
-    	this.id = id;
-    	this.name.set(name);
-    }
-    
-    Status() {
+	private int id;
+	private SimpleStringProperty name = new SimpleStringProperty();
+
+	private Status(int id, String name) {
+		this.id = id;
+		this.name.set(name);
 	}
 
-    @Id
-    public int getId() {
+	Status() {
+	}
+
+	@Id
+	public int getId() {
 		return id;
 	}
-    
-    public void setId(int id) {
+
+	public void setId(int id) {
 		this.id = id;
 	}
-    
-    public String getName() {
-        return name.get();
-    }
 
-    @Column(nullable=false, unique=true)
-    public void setName(String name) {
-        this.name.set(name);
-    }
+	public String getName() {
+		return name.get();
+	}
+
+	@Column(nullable = false, unique = true)
+	public void setName(String name) {
+		this.name.set(name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Status) {
+			Status s = (Status) obj;
+			if ((getId() == 0 || s.getId() == 0) || (getId() == s.getId())) {
+				if (getName() == s.getName()) {
+					return true;
+				}
+			}
+		}
+		return super.equals(obj);
+	}
 }

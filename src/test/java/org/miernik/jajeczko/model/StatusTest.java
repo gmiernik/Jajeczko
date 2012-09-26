@@ -59,4 +59,23 @@ public class StatusTest {
 			em.close();
 		}
 	}
+	
+	@Test
+	public void testEquals1() {
+		final String name = "test_123";
+		final int id = 123;
+		final Status s1 = new Status();
+		s1.setId(id);
+		s1.setName(name);
+		final Status s2 = new Status();
+		s2.setName(name);
+		final Status s3 = new Status();
+		s3.setName(name);
+		s3.setId(id+1);
+
+		assertTrue(s1.equals(s2));
+		assertTrue(s2.equals(s1));
+		assertTrue(s2.equals(s3));
+		assertFalse(s1.equals(s3));
+	}
 }

@@ -115,13 +115,6 @@ public class MainPresenter extends AbstractMainPresenter<JajeczkoService>
 	public void show() {
 		if (!initiated) {
 			setMainContent(getTodayToDo());
-			getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-				@Override
-				public void handle(WindowEvent arg0) {
-					getService().getTimer().dispose();
-				}
-			});
 			getEventBus().addListener(new EventListener<FinishWorkEvent>() {
 
 				@Override

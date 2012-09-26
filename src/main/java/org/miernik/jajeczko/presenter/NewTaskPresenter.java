@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import org.apache.log4j.Logger;
+import org.miernik.jajeczko.App;
 import org.miernik.jajeczko.JajeczkoService;
 import org.miernik.jfxlib.presenter.ModalWindowPresenter;
 
@@ -27,6 +29,8 @@ import org.miernik.jfxlib.presenter.ModalWindowPresenter;
 public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 		implements Initializable {
 
+	final static Logger logger = Logger.getLogger(NewTaskPresenter.class);
+	
 	/**
 	 * define minimum length of task name to validation
 	 */
@@ -75,10 +79,10 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 		if (taskNameField.getText().length() < minTaskNameLength)
 			minLengthInfo.setVisible(true);
 		else {
-			Task<Void> t = new Task<Void>() {
+			final Task<Void> t = new Task<Void>() {
 
 				@Override
-				protected Void call() throws Exception {
+				protected Void call() {
 					getService().addTask(taskNameField.getText());
 					return null;
 				}
@@ -90,7 +94,16 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 					getStage().close();
 				}
 			});
-			new Thread(t).start();
+			t.setOnFailed(new EventHandler<WorkerStateEvent>() {
+				
+				@Override
+				public void handle(WorkerStateEvent arg0) {
+					logger.error(t.getException());
+				}
+			});
+			Thread th = new Thread(t);
+			th.setDaemon(true);
+			th.start();
 		}
 	}
 

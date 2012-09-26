@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -28,6 +30,7 @@ import org.miernik.jajeczko.model.Project;
  */
 @Entity
 @Table(name = "TASKS")
+@NamedQueries(@NamedQuery(name = "TodayTasks", query = "SELECT t FROM Task t WHERE t.status.id IN (2, 3)"))
 public class Task {
 
 	private Category category;
@@ -68,7 +71,7 @@ public class Task {
 		this.id = id;
 	}
 
-	@Column(nullable=false, unique=true)
+	@Column(nullable = false, unique = true)
 	public String getName() {
 		return name.get();
 	}

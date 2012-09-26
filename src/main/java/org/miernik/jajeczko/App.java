@@ -4,9 +4,12 @@
  */
 package org.miernik.jajeczko;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import org.apache.log4j.Logger;
 import org.miernik.jajeczko.event.StartWorkEvent;
 import org.miernik.jajeczko.presenter.MainPresenter;
 import org.miernik.jajeczko.presenter.NewTaskPresenter;
@@ -22,6 +25,9 @@ import org.miernik.jfxlib.presenter.AbstractMainPresenter;
  * @author Miernik
  */
 public class App extends MVPApplication<JajeczkoService> {
+
+	final static Logger logger = Logger.getLogger(App.class);
+	
 	/**
 	 * @param args
 	 *            the command line arguments
@@ -38,12 +44,13 @@ public class App extends MVPApplication<JajeczkoService> {
 		}
 	};
 
+	private EntityManagerFactory emf;
 	private MainPresenter mainPresenter;
 	private TodayToDoPresenter todayToDoPresenter;
 	private ProjectsPresenter projectsPresenter;
 	private NewTaskPresenter newTaskPresenter;
 	private TimerPresenter timerPresenter;
-	private JajeczkoService service = new JajeczkoServiceMemory();;
+	private JajeczkoService service;
 
 	public NewTaskPresenter getNewTaskPresenter() {
 		if (newTaskPresenter == null) {
@@ -97,9 +104,23 @@ public class App extends MVPApplication<JajeczkoService> {
 
 		getNewTaskPresenter().show();
 	}
+	
+	@Override
+	public void stop() throws Exception {
+		getService().dispose();
+		emf.close();
+		super.stop();
+	}
 
 	@Override
 	public JajeczkoService getService() {
+		if (service==null) {
+			logger.debug("Create JajeczkoServiceHSQL object");
+			emf = Persistence.createEntityManagerFactory("jajeczko");
+			JajeczkoServiceHSQL js = new JajeczkoServiceHSQL();
+			js.setEntityManager(emf.createEntityManager());
+			service = js;
+		}
 		return this.service;
 	}
 }

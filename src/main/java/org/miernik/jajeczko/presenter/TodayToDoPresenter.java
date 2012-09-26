@@ -7,6 +7,7 @@ package org.miernik.jajeczko.presenter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,7 +46,7 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 
 	public ObservableList<Task> getTasks() {
 		if (tasks == null)
-			tasks = getService().getTodayTasks();
+			tasks = FXCollections.observableList(getService().getTodayTasks());
 		return tasks;
 	}
 

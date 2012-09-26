@@ -4,31 +4,28 @@
  */
 package org.miernik.jajeczko;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import org.miernik.jajeczko.model.JajeczkoTimer;
 import org.miernik.jajeczko.model.Task;
-import org.miernik.jfxlib.Service;
 
 /**
  *
  * @author Miernik
  */
-public class JajeczkoServiceMemory implements Service, JajeczkoService {
+public class JajeczkoServiceMemory extends JajeczkoServiceBase {
     
-    private ObservableList<Task> tasks;
-    private int idCounter = 0;
-    private JajeczkoTimer timer;
-    
+    private List<Task> tasks;
+    private int idCounter = 0;    
 
     public JajeczkoServiceMemory() {
-        tasks = FXCollections.observableArrayList();
+        tasks = new ArrayList<>();
         addTask("Testowe zadanie!");
-        timer = new JajeczkoTimer();
     }
         
-    public ObservableList<Task> getTodayTasks() {
+    public List<Task> getTodayTasks() {
         return tasks;
     }
     
@@ -42,7 +39,8 @@ public class JajeczkoServiceMemory implements Service, JajeczkoService {
     }
 
 	@Override
-	public JajeczkoTimer getTimer() {
-		return timer;
+	public void approvalTask(Task t) {
+		// TODO Auto-generated method stub
+		
 	}
 }
