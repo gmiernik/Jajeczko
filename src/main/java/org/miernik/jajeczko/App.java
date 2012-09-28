@@ -8,7 +8,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import org.apache.log4j.Logger;
 import org.miernik.jajeczko.event.StartWorkEvent;
 import org.miernik.jajeczko.presenter.MainPresenter;
@@ -40,7 +39,7 @@ public class App extends MVPApplication<JajeczkoService> {
 
 		@Override
 		public void performed(StartWorkEvent e) {
-			getTimerPresenter().start(e.getTask());
+			getTimerPresenter().show();
 		}
 	};
 
@@ -117,7 +116,7 @@ public class App extends MVPApplication<JajeczkoService> {
 		if (service==null) {
 			logger.debug("Create JajeczkoServiceHSQL object");
 			emf = Persistence.createEntityManagerFactory("jajeczko");
-			JajeczkoServiceHSQL js = new JajeczkoServiceHSQL();
+			JajeczkoServiceHSQL js = new JajeczkoServiceHSQL(getEventBus());
 			js.setEntityManager(emf.createEntityManager());
 			service = js;
 		}

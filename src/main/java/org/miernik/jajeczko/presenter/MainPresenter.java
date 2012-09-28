@@ -15,10 +15,8 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.miernik.jajeczko.JajeczkoService;
-import org.miernik.jajeczko.event.CancelWorkEvent;
-import org.miernik.jajeczko.event.FinishWorkEvent;
+import org.miernik.jajeczko.event.CloseTimerEvent;
 import org.miernik.jfxlib.event.EventListener;
 import org.miernik.jfxlib.presenter.AbstractMainPresenter;
 import org.miernik.jfxlib.presenter.Presenter;
@@ -115,17 +113,10 @@ public class MainPresenter extends AbstractMainPresenter<JajeczkoService>
 	public void show() {
 		if (!initiated) {
 			setMainContent(getTodayToDo());
-			getEventBus().addListener(new EventListener<FinishWorkEvent>() {
+			getEventBus().addListener(new EventListener<CloseTimerEvent>() {
 
 				@Override
-				public void performed(FinishWorkEvent event) {
-					getStage().show();
-				}
-			});
-			getEventBus().addListener(new EventListener<CancelWorkEvent>() {
-
-				@Override
-				public void performed(CancelWorkEvent event) {
+				public void performed(CloseTimerEvent arg) {
 					getStage().show();
 				}
 			});

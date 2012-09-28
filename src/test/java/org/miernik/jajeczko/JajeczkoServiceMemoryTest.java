@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.miernik.jajeczko.model.JajeczkoTimer;
 import org.miernik.jajeczko.model.Task;
+import org.miernik.jfxlib.event.SimpleEventBus;
 
 import junit.framework.TestCase;
 
@@ -14,7 +15,7 @@ public class JajeczkoServiceMemoryTest extends TestCase {
 	
 	@Before
 	protected void setUp() throws Exception {
-		service = new JajeczkoServiceMemory();
+		service = new JajeczkoServiceMemory(new SimpleEventBus());
 	}
 	
 	@After

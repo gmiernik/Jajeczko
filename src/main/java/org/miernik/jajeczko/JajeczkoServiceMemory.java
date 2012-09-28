@@ -6,10 +6,8 @@ package org.miernik.jajeczko;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.miernik.jajeczko.model.Task;
+import org.miernik.jfxlib.event.EventBus;
 
 /**
  *
@@ -20,10 +18,12 @@ public class JajeczkoServiceMemory extends JajeczkoServiceBase {
     private List<Task> tasks;
     private int idCounter = 0;    
 
-    public JajeczkoServiceMemory() {
+    public JajeczkoServiceMemory(EventBus eb) {
+    	super(eb);
         tasks = new ArrayList<>();
         addTask("Testowe zadanie!");
     }
+    
         
     public List<Task> getTodayTasks() {
         return tasks;
@@ -39,7 +39,38 @@ public class JajeczkoServiceMemory extends JajeczkoServiceBase {
     }
 
 	@Override
-	public void approvalTask(Task t) {
+	public void approveTask(Task t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void completeTask(Task task) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rejectTask(Task task) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void suspendTask(Task task) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postponeTask(Task task) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	protected void updateTask(Task task) {
 		// TODO Auto-generated method stub
 		
 	}

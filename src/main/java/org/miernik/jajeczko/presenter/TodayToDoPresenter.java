@@ -6,7 +6,6 @@ package org.miernik.jajeczko.presenter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,9 +17,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import org.apache.log4j.Logger;
 import org.miernik.jajeczko.JajeczkoService;
-import org.miernik.jajeczko.event.FinishWorkEvent;
-import org.miernik.jajeczko.event.StartWorkEvent;
+import org.miernik.jajeczko.event.AddTaskEvent;
+import org.miernik.jajeczko.model.Status;
 import org.miernik.jajeczko.model.Task;
 import org.miernik.jfxlib.dialogs.MessageBox;
 import org.miernik.jfxlib.event.EventListener;
@@ -33,6 +33,8 @@ import org.miernik.jfxlib.presenter.AbstractPresenter;
 public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 		implements Initializable {
 
+	final static Logger logger = Logger.getLogger(TodayToDoPresenter.class);
+
 	@FXML
 	private Pane todayToDo;
 	@FXML
@@ -41,29 +43,30 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 	private Button addButton;
 	@FXML
 	private Button startButton;
-	private ObservableList<Task> tasks;
+	@FXML
+	private Button doneButton;
 	private boolean initiated;
-
-	public ObservableList<Task> getTasks() {
-		if (tasks == null)
-			tasks = FXCollections.observableList(getService().getTodayTasks());
-		return tasks;
-	}
 
 	@Override
 	public void show() {
+		logger.debug("run show() method");
+		ObservableList<Task> tasks = FXCollections.observableList(getService()
+				.getTodayTasks());
+		taskTable.setItems(tasks);
 		if (!initiated) {
-			taskTable.setItems(getTasks());
-			getEventBus().addListener(new EventListener<FinishWorkEvent>() {
+			getEventBus().addListener(new EventListener<AddTaskEvent>() {
 
 				@Override
-				public void performed(FinishWorkEvent event) {
-					// TODO: improve refresh method
-					System.out.println("refreshed ");
+				public void performed(AddTaskEvent arg0) {
+					taskTable.getItems().add(arg0.getTask());
 				}
 			});
 			initiated = true;
 		}
+	}
+
+	private Task getSelectedTask() {
+		return taskTable.getSelectionModel().getSelectedItem();
 	}
 
 	@Override
@@ -87,8 +90,8 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 					(new MessageBox("Start zegara",
 							"Musisz wybrać zadanie do realizacji.")).show();
 				else {
-					getEventBus().fireEvent(new StartWorkEvent(t));
-					todayToDo.getScene().getWindow().hide();
+					getService().getTimer().startWork(t);
+					getView().getScene().getWindow().hide();
 				}
 			}
 		});
@@ -99,31 +102,33 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 				fireAction("NewTask");
 			}
 		});
+		doneButton.setOnAction(new EventHandler<ActionEvent>() {
 
-		// taskTable.setEditable(true);
-		// name2 = new TableColumn<Task, String>("name2");
-		// name2.setEditable(true);
-		// taskTable.getColumns().add(name2);
-		// name2.setPrefWidth(200);
-		// Callback<TableColumn, TableCell> callFactory = new
-		// Callback<TableColumn, TableCell>() {
-		//
-		// @Override
-		// public TableCell call(TableColumn p) {
-		// return new EditingCell();
-		// }
-		// };
-		// name2.setCellFactory(callFactory);
-		// name2.setCellValueFactory(new PropertyValueFactory("name"));
-	}
+			@Override
+			public void handle(ActionEvent arg0) {
+				final Task t = getSelectedTask();
+				if (t.getStatus() == Status.IN_PROGRESS) {
+					AcceptanceDialog d = new AcceptanceDialog("Complete task",
+							"Czy jesteś pewien, że ukończyłeś to zadanie? \n"
+									+ "Opis zadania: " + t.getName());
+					d.setDialogResultHandler(new DialogResultHandler() {
 
-	public void addTask() {
-		taskTable.requestFocus();
-		Task newTask = new Task("nowe zadanie");
-		taskTable.getItems().add(newTask);
-		TableView.TableViewSelectionModel<Task> s = taskTable
-				.getSelectionModel();
-		s.select(newTask);
+						@Override
+						public void handle(DialogResult result) {
+							if (result == DialogResult.Yes)
+								getService().completeTask(t);
+						}
+					});
+					d.show();
+				} else {
+					new MessageBox(
+							"Complete task",
+							"Nie można zakończyć zadania bez jego realizacji! \n"
+									+ "Usuń zadanie lub rozpocznij nad nim prace.")
+							.show();
+				}
+			}
+		});
 	}
 
 }

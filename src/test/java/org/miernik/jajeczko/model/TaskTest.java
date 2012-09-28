@@ -2,8 +2,8 @@ package org.miernik.jajeczko.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Collection;
 import java.util.Date;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -98,5 +98,46 @@ public class TaskTest {
 		} finally {
 			em.close();
 		}
+	}
+
+	@Test
+	public void testAddEgg() {
+		final Task t = new Task();
+		final Date startWork = new Date();
+		final Date stopWork = new Date(startWork.getTime() + 10);
+
+		Egg e = t.addEgg(startWork, stopWork);
+		assertNotNull(e.getStartTime());
+		assertEquals(startWork, e.getStartTime());
+		assertEquals(1, t.getNumberOfEggs());
+		assertNotNull(e.getStopTime());
+		assertEquals(stopWork, e.getStopTime());
+	}
+
+	@Test
+	public void testPersistEggs() {
+		final String name = "test123";
+		final Task t1 = new Task(name);
+		t1.addEgg(new Date(), new Date());
+
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.persist(t1);
+		em.getTransaction().commit();
+		em.close();
+	}
+	
+	@Test
+	public void testSetEggs() {
+		final Task t = new Task();
+		final Task t2 = new Task();
+		
+		t.addEgg(new Date(), new Date());
+		t.addEgg(new Date(), new Date());
+		Collection<Egg> coll = t.getEggs();
+		
+		assertEquals(0, t2.getNumberOfEggs());
+		t2.setEggs(coll);
+		assertEquals(coll.size(), t2.getNumberOfEggs());
 	}
 }

@@ -7,7 +7,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -89,25 +89,24 @@ public class Task {
 		this.status = status;
 	}
 
-	@OneToMany
+	@OneToMany(cascade={CascadeType.ALL})
 	@JoinColumn(name = "TASK_ID", referencedColumnName = "ID")
 	public Collection<Egg> getEggs() {
 		return eggs;
 	}
 
-	public void setEggs(Collection<Egg> eggs) {
+	void setEggs(Collection<Egg> eggs) {
 		this.eggs = eggs;
+		this.numberOfEggs.set(eggs.size());
 	}
 
-	// TODO: prepare test for the addEgg method
-	public void addEgg() {
+	public Egg addEgg(Date start, Date stop) {
 		Egg egg = new Egg();
-		Date startTime = new Date();
-		startTime.setTime(startTime.getTime() - (25 * 60000));
-		egg.setStartTime(startTime);
+		egg.setStartTime(start);
+		egg.setStopTime(stop);
 		eggs.add(egg);
-		setName(getName() + "x");
 		numberOfEggs.set(eggs.size());
+		return egg;
 	}
 
 	@Override

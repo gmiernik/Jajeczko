@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -25,11 +26,15 @@ public class Egg {
 	private SimpleIntegerProperty interruptionInside;
 	private SimpleIntegerProperty interruptionOutside;
 	private ObjectProperty<Date> startTime;
+	private ObjectProperty<Date> stopTime;
+	private SimpleBooleanProperty finished;
 
 	Egg() {
 		interruptionInside = new SimpleIntegerProperty();
 		interruptionOutside = new SimpleIntegerProperty();
 		startTime = new SimpleObjectProperty<Date>();
+		stopTime = new SimpleObjectProperty<Date>();
+		finished = new SimpleBooleanProperty(false);
 	}
 
 	@Id
@@ -65,5 +70,21 @@ public class Egg {
 
 	public void setStartTime(Date startTime) {
 		this.startTime.set(startTime);
+	}
+	
+	public Date getStopTime() {
+		return stopTime.get();
+	}
+	
+	public void setStopTime(Date stopTime) {
+		this.stopTime.set(stopTime);
+	}
+	
+	public boolean isFinished() {
+		return finished.get();
+	}
+	
+	public void setFinished(boolean finished) {
+		this.finished.set(finished);
 	}
 }

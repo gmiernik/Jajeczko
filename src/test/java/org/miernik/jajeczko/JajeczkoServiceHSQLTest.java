@@ -1,18 +1,16 @@
 package org.miernik.jajeczko;
 
 import static org.junit.Assert.*;
-
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.miernik.jajeczko.model.Status;
 import org.miernik.jajeczko.model.Task;
+import org.miernik.jfxlib.event.SimpleEventBus;
 
 public class JajeczkoServiceHSQLTest {
 
@@ -22,13 +20,14 @@ public class JajeczkoServiceHSQLTest {
 	@Before
 	public void setUp() throws Exception {
 		emf = Persistence.createEntityManagerFactory("jajeczko-test");
-		JajeczkoServiceHSQL js = new JajeczkoServiceHSQL();
+		JajeczkoServiceHSQL js = new JajeczkoServiceHSQL(new SimpleEventBus());
 		js.setEntityManager(emf.createEntityManager());
 		service = js;
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		service.dispose();
 		emf.close();
 	}
 
@@ -46,18 +45,51 @@ public class JajeczkoServiceHSQLTest {
 		assertNotNull(result2);
 		assertEquals(result.getId(), result2.getId());
 	}
+	
+	@Test
+	public void testApproveTask() {
+		final Task t = service.addTask("t1");
+		
+		service.approveTask(t);
+		assertEquals(Status.APPROVAL, t.getStatus());
+	}
+
+	@Test
+	public void testCompleteTask() {
+		final Task t = service.addTask("t1");
+		
+		service.completeTask(t);
+		assertEquals(Status.DONE, t.getStatus());
+	}
+	
+	@Test
+	public void testRejectTask() {
+		final Task t = service.addTask("t1");
+		
+		service.rejectTask(t);
+		assertEquals(Status.REJECTED, t.getStatus());
+	}
+
+	@Test
+	public void testSuspendTask() {
+		final Task t = service.addTask("t1");
+		
+		service.suspendTask(t);
+		assertEquals(Status.PENDING, t.getStatus());
+	}
 
 	@Test
 	public void testGetTodayTasks() {
 		final Task t1 = service.addTask("t1");
-		service.approvalTask(t1);
+		service.approveTask(t1);
+		@SuppressWarnings("unused")
 		final Task t2 = service.addTask("t2");
 		final Task t3 = service.addTask("t3");
-		service.approvalTask(t3);
+		service.approveTask(t3);
 		
 		List<Task> result = service.getTodayTasks();
 		assertNotNull(result);
 		assertEquals(2, result.size());
 	}
-	
+		
 }

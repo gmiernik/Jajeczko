@@ -6,7 +6,6 @@ package org.miernik.jajeczko.presenter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,8 +17,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.apache.log4j.Logger;
-import org.miernik.jajeczko.App;
 import org.miernik.jajeczko.JajeczkoService;
+import org.miernik.jajeczko.event.AddTaskEvent;
+import org.miernik.jajeczko.model.Task;
 import org.miernik.jfxlib.presenter.ModalWindowPresenter;
 
 /**
@@ -79,14 +79,17 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 		if (taskNameField.getText().length() < minTaskNameLength)
 			minLengthInfo.setVisible(true);
 		else {
-			final Task<Void> t = new Task<Void>() {
-
+			final javafx.concurrent.Task<Void> t = new javafx.concurrent.Task<Void>() {
+				
 				@Override
-				protected Void call() {
-					getService().addTask(taskNameField.getText());
+				protected Void call() throws Exception {
+					Task task = getService().addTask(taskNameField.getText());
+					getEventBus().fireEvent(new AddTaskEvent(task));
+					//FIXME: temporary approve automatically until prepare 'waiting tasks' list
+					getService().approveTask(task);
 					return null;
 				}
-			};
+			}; 
 			t.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 				
 				@Override

@@ -2,11 +2,8 @@ package org.miernik.jajeczko.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -19,6 +16,11 @@ public class Status {
 
 	public static Status OPEN = new Status(1, "Open");
 	public static Status APPROVAL = new Status(2, "Approval");
+	public static Status IN_PROGRESS = new Status(3, "In progress");
+	public static Status DONE = new Status(4, "Done");
+	public static Status REJECTED = new Status(5, "Rejected");
+	public static Status PENDING = new Status(6, "Pending");
+	public static Status SOMEDAY = new Status(7, "Someday");
 
 	private int id;
 	private SimpleStringProperty name = new SimpleStringProperty();
@@ -60,5 +62,10 @@ public class Status {
 			}
 		}
 		return super.equals(obj);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Status(%2$d,%1$s)", getName(), getId());
 	}
 }

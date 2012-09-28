@@ -1,17 +1,16 @@
 package org.miernik.jajeczko.presenter;
 
-import javafx.application.Platform;
+import java.util.List;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.layout.AnchorPane;
 import org.jodah.concurrentunit.junit.ConcurrentTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.miernik.jajeczko.JajeczkoService;
-import org.miernik.jajeczko.JajeczkoServiceMemory;
+import org.miernik.jajeczko.JajeczkoServiceBase;
 import org.miernik.jajeczko.model.Task;
-import org.miernik.jajeczko.model.TimerStatus;
+import org.miernik.jfxlib.event.EventBus;
+import org.miernik.jfxlib.event.SimpleEventBus;
 
 public class TimerPresenterTest extends ConcurrentTestCase {
 
@@ -21,37 +20,67 @@ public class TimerPresenterTest extends ConcurrentTestCase {
 	}
 
 	private JajeczkoService service;
+	private EventBus eventBus;
 
 	@Before
 	public void setUp() throws Exception {
-		service = new JajeczkoServiceMemory();
+		eventBus = new SimpleEventBus();
+		service = new JajeczkoServiceBase(eventBus) {
+			
+			@Override
+			public void suspendTask(Task task) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void rejectTask(Task task) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void postponeTask(Task task) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public List<Task> getTodayTasks() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void completeTask(Task task) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void approveTask(Task task) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public Task addTask(String name) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			protected void updateTask(Task task) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		service.dispose();
 		service = null;
+		eventBus = null;
 	}
-
-	@Test
-	public void testStart() throws Throwable {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				final TimerPresenter p = new TimerPresenter();
-				final Task t = new Task("Test1");
-				p.setView(new AnchorPane());
-				p.setService(service);
-
-				p.start(t);
-
-				threadAssertEquals(t, service.getTimer().getTask());
-				threadAssertEquals(TimerStatus.WorkingTime, service.getTimer().getStatus());
-				
-				p.close();
-
-				resume();
-			}
-		});
-		threadWait(1500);
-	}
-
 }

@@ -1,19 +1,13 @@
 package org.miernik.jajeczko.model;
 
 import static org.junit.Assert.*;
-
-import java.io.File;
 import java.util.Date;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 public class EggTest {
 
@@ -59,4 +53,5 @@ public class EggTest {
 		em.close();
 		assertTrue(e.getId() > 0);
 	}
+	
 }

@@ -10,42 +10,44 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.cell.MapValueFactory?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" 
-      fx:controller="org.miernik.jajeczko.presenter.TodayToDoPresenter"
-      AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
-      AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-      fx:id="todayToDo" >
-    <children>
-        <Label fx:id="header" text="%TodayToDo" />
-        <ToolBar fx:id="test">
-            <Button fx:id="addButton" />
-            <Button fx:id="startButton">
-                <tooltip>
-                    <Tooltip text="%StartTooltip"/>
-                </tooltip>
-            </Button>
-            <Button fx:id="doneButton" />
-            <Button fx:id="rejectButton" />
-            <Button fx:id="pendingButton" />
-        </ToolBar>
-        <TableView fx:id="taskTable" prefHeight="1000">
-            <columns>
-                <TableColumn text="%TaskId" prefWidth="40">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="id" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn text="%TaskName" prefWidth="150">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="name" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn prefWidth="50">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="numberOfEggs" />
-                    </cellValueFactory>
-                </TableColumn>
-            </columns>
-        </TableView>
-    </children>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.miernik.jajeczko.presenter.TodayToDoPresenter"
+	AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
+	AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" fx:id="todayToDo">
+	<children>
+		<Label fx:id="header" text="%TodayToDo" />
+		<ToolBar fx:id="test">
+			<Button fx:id="addButton" />
+			<Button fx:id="startButton">
+				<tooltip>
+					<Tooltip text="%StartTooltip" />
+				</tooltip>
+			</Button>
+			<Button fx:id="doneButton">
+				<tooltip>
+					<Tooltip text="%DoneTooltip" />
+				</tooltip>
+			</Button>
+			<Button fx:id="rejectButton" />
+			<Button fx:id="pendingButton" />
+		</ToolBar>
+		<TableView fx:id="taskTable" prefHeight="1000">
+			<columns>
+				<TableColumn text="%TaskId" prefWidth="40">
+					<cellValueFactory>
+						<PropertyValueFactory property="id" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn text="%TaskName" prefWidth="150">
+					<cellValueFactory>
+						<PropertyValueFactory property="name" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn prefWidth="50">
+					<cellValueFactory>
+						<PropertyValueFactory property="numberOfEggs" />
+					</cellValueFactory>
+				</TableColumn>
+			</columns>
+		</TableView>
+	</children>
 </VBox>
