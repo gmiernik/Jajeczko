@@ -6,7 +6,7 @@
 
 
 	<target name="default">
-		<fx:jar destfile="${basedir}/dist/jajeczko.jar">
+		<fx:jar destfile="${basedir}/jajeczko.jar">
 			<!-- Details about application -->
 			<fx:application name="${application.title}" mainClass="org.miernik.jajeczko.App" />
 
@@ -22,10 +22,11 @@
 			<!-- Customize jar manifest (optional) -->
 			<manifest>
 				<attribute name="Implementation-Vendor" value="Grzegorz Miernik" />
-				<attribute name="Implementation-Version" value="0.1" />
+				<attribute name="Implementation-Version" value="0.2" />
 			</manifest>
 		</fx:jar>
 
+		<!--
 		<fx:deploy width="600" height="400" outdir="${basedir}/dist2" outfile="jajeczko" nativeBundles="all">
 			<fx:application name="${application.title}" mainClass="${javafx.main.class}" />
 			<fx:resources>
@@ -34,6 +35,7 @@
 			</fx:resources>
 			<fx:info title="${application.title}" />
 		</fx:deploy>
+		-->
 	</target>
 </project>
 

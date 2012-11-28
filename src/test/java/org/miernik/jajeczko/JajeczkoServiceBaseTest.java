@@ -25,58 +25,53 @@ public class JajeczkoServiceBaseTest {
 	private JajeczkoService service;
 	private EventBus eventBus;
 	private boolean updateTask;
+	private boolean startWork;
 
 	@Before
 	public void setUp() throws Exception {
 		updateTask = false;
+		startWork = false;
 		eventBus = new SimpleEventBus();
 		JajeczkoServiceBase serviceBase = new JajeczkoServiceBase(eventBus) {
 			
 			@Override
 			public void suspendTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void rejectTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void postponeTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public List<Task> getTodayTasks() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 			
 			@Override
 			public void completeTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void approveTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public Task addTask(String name) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 			
 			@Override
 			protected void updateTask(Task task) {
 				updateTask = true;
+			}
+
+			@Override
+			public void startWorking(Task task) {
+				startWork = true;
 			}
 		};
 		service = serviceBase;
@@ -103,8 +98,7 @@ public class JajeczkoServiceBaseTest {
 		
 		service.getTimer().startWork(t);
 		Thread.sleep(100);
-		assertEquals(Status.IN_PROGRESS, t.getStatus());
-		assertTrue(updateTask);
+		assertTrue(startWork);
 	}
 
 	@Test

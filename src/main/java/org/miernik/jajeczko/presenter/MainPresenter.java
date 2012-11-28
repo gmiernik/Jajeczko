@@ -4,29 +4,32 @@
  */
 package org.miernik.jajeczko.presenter;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import org.miernik.jajeczko.JajeczkoService;
 import org.miernik.jajeczko.event.CloseTimerEvent;
 import org.miernik.jfxlib.event.EventListener;
-import org.miernik.jfxlib.presenter.AbstractMainPresenter;
+import org.miernik.jfxlib.presenter.MainWindowPresenter;
 import org.miernik.jfxlib.presenter.Presenter;
 
 /**
  * 
  * @author Miernik
  */
-public class MainPresenter extends AbstractMainPresenter<JajeczkoService>
-		implements Initializable {
+public class MainPresenter extends MainWindowPresenter<JajeczkoService> {
+
+	final static Logger logger = Logger.getLogger(MainPresenter.class);
+	
+	public MainPresenter(Stage s) {
+		super(s);
+	}
 
 	@FXML
 	private MenuItem menuClose;
@@ -38,10 +41,10 @@ public class MainPresenter extends AbstractMainPresenter<JajeczkoService>
 	private MenuItem menuProjects;
 	@FXML
 	private AnchorPane mainContent;
-	private Stage stage;
 	private Presenter todayToDo;
 	private Presenter projects;
-	private boolean initiated;
+	private double width;
+	private double height;
 
 	public Presenter getProjectsView() {
 		return projects;
@@ -59,31 +62,14 @@ public class MainPresenter extends AbstractMainPresenter<JajeczkoService>
 		this.todayToDo = todayToDo;
 	}
 
-	public void setMainContent(Presenter p) {
-		ObservableList<Node> list = this.mainContent.getChildren();
-		list.clear();
-		list.add(p.getView());
-		p.show();
-	}
-
 	@Override
-	public void setMainView(Stage stage) {
-		super.setMainView(stage);
-		this.stage = stage;
-		stage.getScene().getStylesheets().add("styles/stylesheet.css");
-	}
-
-	protected Stage getStage() {
-		return stage;
-	}
-
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	public void onInit() {
+		getScene().getStylesheets().add("styles/stylesheet.css");
 		menuClose.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent t) {
-				getStage().close();
+				hide();
 			}
 		});
 		menuAbout.setOnAction(new EventHandler<ActionEvent>() {
@@ -107,21 +93,37 @@ public class MainPresenter extends AbstractMainPresenter<JajeczkoService>
 				setMainContent(getTodayToDo());
 			}
 		});
+		getEventBus().addListener(new EventListener<CloseTimerEvent>() {
+
+			@Override
+			public void performed(CloseTimerEvent arg) {
+				show();
+			}
+		});
 	}
-
+	
 	@Override
-	public void show() {
-		if (!initiated) {
+	protected void onShow() {
+		logger.debug("run onShow method");
+		if (mainContent.getChildren().isEmpty())
 			setMainContent(getTodayToDo());
-			getEventBus().addListener(new EventListener<CloseTimerEvent>() {
-
-				@Override
-				public void performed(CloseTimerEvent arg) {
-					getStage().show();
-				}
-			});
-			initiated = true;
+		if (width!=0 && height!=0) {
+			logger.debug("restore window size");
+			getWindow().setHeight(height);
+			getWindow().setWidth(width);
 		}
 	}
+	
+	@Override
+	protected void onHide() {
+		logger.debug("run onHide method");
+		width = getWindow().getWidth();
+		height = getWindow().getHeight();
+	}
 
+	public void setMainContent(Presenter p) {
+		ObservableList<Node> list = this.mainContent.getChildren();
+		list.clear();
+		list.add(p.getView());
+	}
 }

@@ -78,4 +78,20 @@ public class StatusTest {
 		assertTrue(s2.equals(s3));
 		assertFalse(s1.equals(s3));
 	}
+
+	@Test
+	public void testEquals2() {
+		final String name1 = "test_123";
+		final String name2 = new StringBuffer(name1).toString();
+		final int id = 123;
+		final Status s1 = new Status();
+		s1.setId(id);
+		s1.setName(name1);
+		final Status s2 = new Status();
+		s2.setName(name2);
+		s2.setId(id);
+
+		assertTrue(s1.equals(s2));
+		assertTrue(s2.equals(s1));
+	}
 }

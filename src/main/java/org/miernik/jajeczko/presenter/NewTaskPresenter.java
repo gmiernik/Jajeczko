@@ -4,13 +4,10 @@
  */
 package org.miernik.jajeczko.presenter;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -26,8 +23,7 @@ import org.miernik.jfxlib.presenter.ModalWindowPresenter;
  * 
  * @author Miernik
  */
-public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
-		implements Initializable {
+public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService> {
 
 	final static Logger logger = Logger.getLogger(NewTaskPresenter.class);
 	
@@ -44,13 +40,9 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 	@FXML
 	private Label minLengthInfo;
 
-	public NewTaskPresenter() {
-		// TODO: set window title
-		// TODO: add functionality to read window title from resource bundle
-	}
-
 	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	public void onInit() {
+		getStage().setTitle(getResource().getString("WindowTitle"));
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -84,9 +76,9 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 				@Override
 				protected Void call() throws Exception {
 					Task task = getService().addTask(taskNameField.getText());
-					getEventBus().fireEvent(new AddTaskEvent(task));
 					//FIXME: temporary approve automatically until prepare 'waiting tasks' list
 					getService().approveTask(task);
+					getEventBus().fireEvent(new AddTaskEvent(task));
 					return null;
 				}
 			}; 
@@ -101,7 +93,7 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 				
 				@Override
 				public void handle(WorkerStateEvent arg0) {
-					logger.error(t.getException());
+					logger.error(t.getException(), t.getException());
 				}
 			});
 			Thread th = new Thread(t);
@@ -111,10 +103,10 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService>
 	}
 
 	@Override
-	public void show() {
+	public void onShow() {
 		taskNameField.clear();
 		minLengthInfo.setVisible(false);
-		super.show();
+		taskNameField.requestFocus();
 	}
 
 }

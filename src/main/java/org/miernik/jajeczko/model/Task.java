@@ -37,6 +37,7 @@ public class Task {
 	private int id;
 	private StringProperty name = new SimpleStringProperty();
 	private Status status;
+	private StringProperty statusName = new SimpleStringProperty();
 	private IntegerProperty numberOfEggs = new SimpleIntegerProperty();
 	private Collection<Egg> eggs;
 	private Project project;
@@ -80,13 +81,22 @@ public class Task {
 		this.name.set(name);
 	}
 
-	@OneToOne
+	@OneToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
 	public Status getStatus() {
 		return status;
 	}
 
 	public void setStatus(Status status) {
 		this.status = status;
+		if (status==null)
+			statusName.set(null);
+		else
+			statusName.set(status.getName());
+	}
+	
+	public StringProperty statusNameProperty() {
+		return statusName;
 	}
 
 	@OneToMany(cascade={CascadeType.ALL})

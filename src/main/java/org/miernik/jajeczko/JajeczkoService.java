@@ -42,6 +42,13 @@ public interface JajeczkoService extends Service {
 	 * @param task
 	 */
 	void postponeTask(Task task);
+	
+	/**
+	 * Start working on the task. Status will change to IN PROGRESS.
+	 * @param task
+	 */
+	void startWorking(Task task);
+	
 	/**
 	 * Access to Timer object
 	 * @return

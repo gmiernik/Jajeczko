@@ -29,50 +29,41 @@ public class TimerPresenterTest extends ConcurrentTestCase {
 			
 			@Override
 			public void suspendTask(Task task) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void rejectTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void postponeTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public List<Task> getTodayTasks() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 			
 			@Override
 			public void completeTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void approveTask(Task task) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public Task addTask(String name) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 			
 			@Override
 			protected void updateTask(Task task) {
-				// TODO Auto-generated method stub
-				
+			}
+
+			@Override
+			public void startWorking(Task task) {
 			}
 		};
 	}

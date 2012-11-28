@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.miernik.jajeczko.presenter.NewTaskPresenter">
+<VBox xmlns:fx="http://javafx.com/fxml">
 	<padding>
 		<Insets top="8" bottom="8" left="8" right="8" />
 	</padding>

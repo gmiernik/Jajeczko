@@ -5,18 +5,12 @@
 package org.miernik.jajeczko.presenter;
 
 import org.miernik.jajeczko.JajeczkoService;
-import org.miernik.jfxlib.presenter.AbstractPresenter;
+import org.miernik.jfxlib.presenter.BasePresenter;
 
 /**
  *
  * @author Miernik
  */
-public class ProjectsPresenter extends AbstractPresenter<JajeczkoService> {
-
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
+public class ProjectsPresenter extends BasePresenter<JajeczkoService> {
     
 }

@@ -4,7 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.apache.log4j.Logger;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * @author Miernik
@@ -13,6 +15,8 @@ import javafx.beans.property.SimpleStringProperty;
 @Entity
 @Table(name = "STATUSES")
 public class Status {
+	
+	final static Logger logger = Logger.getLogger(Status.class);
 
 	public static Status OPEN = new Status(1, "Open");
 	public static Status APPROVAL = new Status(2, "Approval");
@@ -45,6 +49,10 @@ public class Status {
 	public String getName() {
 		return name.get();
 	}
+	
+	public StringProperty nameProperty() {
+		return name;
+	}
 
 	@Column(nullable = false, unique = true)
 	public void setName(String name) {
@@ -56,7 +64,7 @@ public class Status {
 		if (obj instanceof Status) {
 			Status s = (Status) obj;
 			if ((getId() == 0 || s.getId() == 0) || (getId() == s.getId())) {
-				if (getName() == s.getName()) {
+				if (getName().equals(s.getName())) {
 					return true;
 				}
 			}

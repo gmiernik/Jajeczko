@@ -19,35 +19,38 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 
 	private EntityManager entityManager;
 	private boolean initiated = false;
-	private Status statusOpen = Status.OPEN;
-	private Status statusApproval = Status.APPROVAL;
-	private Status statusInProgress = Status.IN_PROGRESS;
-	private Status statusDone = Status.DONE;
-	private Status statusRejected = Status.REJECTED;
-	private Status statusPending = Status.PENDING;
-	private Status statusSomeday = Status.SOMEDAY;
+	private Status statusOpen;
+	private Status statusApproval;
+	private Status statusInProgress;
+	private Status statusDone;
+	private Status statusRejected;
+	private Status statusPending;
+	private Status statusSomeday;
 
 	private void init() {
 		logger.debug("run init() methid");
 		if (!initiated) {
 			entityManager.getTransaction().begin();
-			persistStatus(statusOpen);
-			persistStatus(statusApproval);
-			persistStatus(statusInProgress);
-			persistStatus(statusDone);
-			persistStatus(statusRejected);
-			persistStatus(statusPending);
-			persistStatus(statusSomeday);
+			statusOpen = persistStatus(Status.OPEN);
+			statusApproval = persistStatus(Status.APPROVAL);
+			statusInProgress = persistStatus(Status.IN_PROGRESS);
+			statusDone = persistStatus(Status.DONE);
+			statusRejected = persistStatus(Status.REJECTED);
+			statusPending = persistStatus(Status.PENDING);
+			statusSomeday = persistStatus(Status.SOMEDAY);
 			entityManager.getTransaction().commit();
 			initiated = true;
 		}
 	}
 	
-	private void persistStatus(Status s) {
-		if (entityManager.find(Status.class, s.getId()) != null)
-			entityManager.merge(s);
-		else
+	private Status persistStatus(Status s) {
+		Status result = entityManager.find(Status.class, s.getId());
+		if (result != null) {
+			return entityManager.merge(s);
+		} else {
 			entityManager.persist(s);
+			return s;
+		}
 	}
 
 	@Override
@@ -66,6 +69,8 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 
 	@Override
 	public List<Task> getTodayTasks() {
+		if (!initiated)
+			init();
 		Query q = entityManager.createNamedQuery("TodayTasks");
 		@SuppressWarnings("unchecked")
 		List<Task> tasks = q.getResultList();
@@ -79,10 +84,13 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 			init();
 		Task t = new Task(name);
 		t.setStatus(statusOpen);
+		if (entityManager.contains(statusOpen))
+			logger.info("persistent context include OPEN status");
 		logger.debug("begin transaction");
 		entityManager.getTransaction().begin();
 		entityManager.persist(t);
 		entityManager.getTransaction().commit();
+		logger.debug("commit transaction");
 		return t;
 	}
 
@@ -92,6 +100,7 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 		entityManager.getTransaction().begin();
 		entityManager.persist(t);
 		entityManager.getTransaction().commit();
+		logger.debug("fire: UpdateTaskEvent, "+t);
 		getEventBus().fireEvent(new UpdateTaskEvent(t));
 	}
 
@@ -117,11 +126,17 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 		task.setStatus(statusPending);
 		updateTask(task);
 	}
+	
+	@Override
+	public void startWorking(Task task) {
+		task.setStatus(statusInProgress);
+		updateTask(task);
+	}
 
 	@Override
-	public void postponeTask(Task task) {
-		// TODO Auto-generated method stub
-		
+	public void postponeTask(Task task) {		
+		task.setStatus(statusSomeday);
+		updateTask(task);
 	}
 
 }

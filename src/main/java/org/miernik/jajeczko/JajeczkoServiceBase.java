@@ -5,7 +5,6 @@ import org.miernik.jajeczko.event.FinishWorkEvent;
 import org.miernik.jajeczko.event.StartWorkEvent;
 import org.miernik.jajeczko.model.Egg;
 import org.miernik.jajeczko.model.JajeczkoTimer;
-import org.miernik.jajeczko.model.Status;
 import org.miernik.jajeczko.model.Task;
 import org.miernik.jfxlib.event.EventBus;
 import org.miernik.jfxlib.event.EventListener;
@@ -17,8 +16,7 @@ public abstract class JajeczkoServiceBase implements JajeczkoService {
 		
 		@Override
 		public void performed(StartWorkEvent arg) {
-			arg.getTask().setStatus(Status.IN_PROGRESS);
-			updateTask(arg.getTask());
+			startWorking(arg.getTask());
 		}
 	};
 	private EventListener<CancelWorkEvent> cancelWorkListener = new EventListener<CancelWorkEvent>() {

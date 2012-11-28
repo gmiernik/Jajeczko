@@ -9,8 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400" prefWidth="320" xmlns:fx="http://javafx.com/fxml" 
-            fx:controller="org.miernik.jajeczko.presenter.MainPresenter" >
+<AnchorPane prefHeight="400" prefWidth="450" xmlns:fx="http://javafx.com/fxml">
     <children>
         <MenuBar AnchorPane.topAnchor="0.0">
             <menus>

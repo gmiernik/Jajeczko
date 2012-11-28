@@ -92,4 +92,17 @@ public class JajeczkoServiceHSQLTest {
 		assertEquals(2, result.size());
 	}
 		
+	@Test
+	public void testGetStatus() {
+		final Task t1 = service.addTask("t1");
+		service.approveTask(t1);
+		
+		List<Task> result = service.getTodayTasks();
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		Task rTask = result.get(0);
+		assertNotNull(rTask);
+		assertNotNull(rTask.getStatus());
+		assertTrue(rTask.getStatus()==Status.APPROVAL);
+	}
 }

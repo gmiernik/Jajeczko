@@ -10,9 +10,9 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.cell.MapValueFactory?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.miernik.jajeczko.presenter.TodayToDoPresenter"
-	AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
-	AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" fx:id="todayToDo">
+<VBox xmlns:fx="http://javafx.com/fxml" AnchorPane.topAnchor="0.0"
+	AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"
+	AnchorPane.bottomAnchor="0.0" fx:id="todayToDo">
 	<children>
 		<Label fx:id="header" text="%TodayToDo" />
 		<ToolBar fx:id="test">
@@ -27,7 +27,11 @@
 					<Tooltip text="%DoneTooltip" />
 				</tooltip>
 			</Button>
-			<Button fx:id="rejectButton" />
+			<Button fx:id="rejectButton">
+				<tooltip>
+					<Tooltip text="%RejectTooltip" />
+				</tooltip>
+			</Button>
 			<Button fx:id="pendingButton" />
 		</ToolBar>
 		<TableView fx:id="taskTable" prefHeight="1000">
@@ -37,7 +41,7 @@
 						<PropertyValueFactory property="id" />
 					</cellValueFactory>
 				</TableColumn>
-				<TableColumn text="%TaskName" prefWidth="150">
+				<TableColumn text="%TaskName" prefWidth="250">
 					<cellValueFactory>
 						<PropertyValueFactory property="name" />
 					</cellValueFactory>
@@ -45,6 +49,11 @@
 				<TableColumn prefWidth="50">
 					<cellValueFactory>
 						<PropertyValueFactory property="numberOfEggs" />
+					</cellValueFactory>
+				</TableColumn>
+				<TableColumn prefWidth="100">
+					<cellValueFactory>
+						<PropertyValueFactory property="statusName" />
 					</cellValueFactory>
 				</TableColumn>
 			</columns>

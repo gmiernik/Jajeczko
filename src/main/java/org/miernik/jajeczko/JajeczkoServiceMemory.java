@@ -39,39 +39,31 @@ public class JajeczkoServiceMemory extends JajeczkoServiceBase {
     }
 
 	@Override
-	public void approveTask(Task t) {
-		// TODO Auto-generated method stub
-		
+	public void approveTask(Task t) {		
 	}
 
 	@Override
 	public void completeTask(Task task) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void rejectTask(Task task) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void suspendTask(Task task) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void postponeTask(Task task) {
-		// TODO Auto-generated method stub
-		
 	}
 
 
 	@Override
 	protected void updateTask(Task task) {
-		// TODO Auto-generated method stub
-		
+	}
+	
+	@Override
+	public void startWorking(Task task) {
 	}
 }

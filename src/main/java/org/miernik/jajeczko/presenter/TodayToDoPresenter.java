@@ -4,14 +4,11 @@
  */
 package org.miernik.jajeczko.presenter;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
@@ -20,18 +17,18 @@ import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 import org.miernik.jajeczko.JajeczkoService;
 import org.miernik.jajeczko.event.AddTaskEvent;
+import org.miernik.jajeczko.event.UpdateTaskEvent;
 import org.miernik.jajeczko.model.Status;
 import org.miernik.jajeczko.model.Task;
 import org.miernik.jfxlib.dialogs.MessageBox;
 import org.miernik.jfxlib.event.EventListener;
-import org.miernik.jfxlib.presenter.AbstractPresenter;
+import org.miernik.jfxlib.presenter.BasePresenter;
 
 /**
  * 
  * @author Miernik
  */
-public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
-		implements Initializable {
+public class TodayToDoPresenter extends BasePresenter<JajeczkoService> {
 
 	final static Logger logger = Logger.getLogger(TodayToDoPresenter.class);
 
@@ -45,24 +42,15 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 	private Button startButton;
 	@FXML
 	private Button doneButton;
-	private boolean initiated;
+	@FXML
+	private Button rejectButton;
 
 	@Override
-	public void show() {
-		logger.debug("run show() method");
+	public void onShow() {
+		logger.debug("run onShow() method");
 		ObservableList<Task> tasks = FXCollections.observableList(getService()
 				.getTodayTasks());
 		taskTable.setItems(tasks);
-		if (!initiated) {
-			getEventBus().addListener(new EventListener<AddTaskEvent>() {
-
-				@Override
-				public void performed(AddTaskEvent arg0) {
-					taskTable.getItems().add(arg0.getTask());
-				}
-			});
-			initiated = true;
-		}
 	}
 
 	private Task getSelectedTask() {
@@ -70,7 +58,24 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 	}
 
 	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	public void onInit() {
+		getEventBus().addListener(new EventListener<AddTaskEvent>() {
+
+			@Override
+			public void performed(AddTaskEvent arg0) {
+				taskTable.getItems().add(arg0.getTask());
+			}
+		});
+		getEventBus().addListener(new EventListener<UpdateTaskEvent>() {
+
+			@Override
+			public void performed(UpdateTaskEvent event) {
+				Task task = event.getTask();
+				if (!task.getStatus().equals(Status.APPROVAL) && !task.getStatus().equals(Status.IN_PROGRESS)) {
+					taskTable.getItems().remove(task);
+				}
+			}
+		});
 		todayToDo.setOnKeyReleased(new EventHandler<KeyEvent>() {
 
 			@Override
@@ -86,12 +91,13 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 			public void handle(ActionEvent arg0) {
 				Task t = taskTable.getSelectionModel().getSelectedItem();
 				if (t == null)
-					// TODO: prepare method to read text from Resource Bundle
-					(new MessageBox("Start zegara",
-							"Musisz wybrać zadanie do realizacji.")).show();
+					(new MessageBox(
+							getResource().getString("StartTimerWindow"),
+							getResource().getString("ChooseTaskToWork")))
+							.show();
 				else {
 					getService().getTimer().startWork(t);
-					getView().getScene().getWindow().hide();
+					getWindow().hide();
 				}
 			}
 		});
@@ -107,10 +113,13 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 			@Override
 			public void handle(ActionEvent arg0) {
 				final Task t = getSelectedTask();
-				if (t.getStatus() == Status.IN_PROGRESS) {
-					AcceptanceDialog d = new AcceptanceDialog("Complete task",
-							"Czy jesteś pewien, że ukończyłeś to zadanie? \n"
-									+ "Opis zadania: " + t.getName());
+				logger.info("status of selected task: "+t.getStatus());
+				logger.info("status in progress: "+Status.IN_PROGRESS);
+				logger.info(t.getStatus().equals(Status.IN_PROGRESS));
+				if (t.getStatus().equals(Status.IN_PROGRESS)) {
+					AcceptanceDialog d = new AcceptanceDialog(getResource()
+							.getString("CompleteTaskWindow"), getResource()
+							.getString("CompleteTaskQuestion") + t.getName());
 					d.setDialogResultHandler(new DialogResultHandler() {
 
 						@Override
@@ -121,14 +130,32 @@ public class TodayToDoPresenter extends AbstractPresenter<JajeczkoService>
 					});
 					d.show();
 				} else {
-					new MessageBox(
-							"Complete task",
-							"Nie można zakończyć zadania bez jego realizacji! \n"
-									+ "Usuń zadanie lub rozpocznij nad nim prace.")
-							.show();
+					new MessageBox(getResource()
+							.getString("CompleteTaskWindow"), getResource()
+							.getString("CompleteTaskWithoutWorking")).show();
 				}
 			}
 		});
+		rejectButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent ae) {
+				final Task t = getSelectedTask();
+				AcceptanceDialog d = new AcceptanceDialog(getResource()
+						.getString("RejectTaskWindow"), getResource()
+						.getString("RejectTaskQuestion") + t.getName());
+				d.setDialogResultHandler(new DialogResultHandler() {
+
+					@Override
+					public void handle(DialogResult result) {
+						if (result == DialogResult.Yes)
+							getService().rejectTask(t);
+					}
+				});
+				d.show();
+			}
+		});
+		
 	}
 
 }

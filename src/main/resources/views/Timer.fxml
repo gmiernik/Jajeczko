@@ -15,7 +15,7 @@
 <?import javafx.scene.control.Button?>
 
 <AnchorPane prefHeight="100" prefWidth="250" fx:id="Timer"
-	xmlns:fx="http://javafx.com/fxml" fx:controller="org.miernik.jajeczko.presenter.TimerPresenter">
+	xmlns:fx="http://javafx.com/fxml">
 	<VBox>
 		<padding>
 			<Insets left="8" right="8" top="8" bottom="8" />

@@ -17,7 +17,7 @@ import org.miernik.jajeczko.presenter.TimerPresenter;
 import org.miernik.jajeczko.presenter.TodayToDoPresenter;
 import org.miernik.jfxlib.MVPApplication;
 import org.miernik.jfxlib.event.EventListener;
-import org.miernik.jfxlib.presenter.AbstractMainPresenter;
+import org.miernik.jfxlib.presenter.MainWindowPresenter;
 
 /**
  * 
@@ -26,7 +26,7 @@ import org.miernik.jfxlib.presenter.AbstractMainPresenter;
 public class App extends MVPApplication<JajeczkoService> {
 
 	final static Logger logger = Logger.getLogger(App.class);
-	
+
 	/**
 	 * @param args
 	 *            the command line arguments
@@ -53,48 +53,37 @@ public class App extends MVPApplication<JajeczkoService> {
 
 	public NewTaskPresenter getNewTaskPresenter() {
 		if (newTaskPresenter == null) {
-			newTaskPresenter = (NewTaskPresenter) load("NewTask", true);
+			newTaskPresenter = loadPresenter(NewTaskPresenter.class, "NewTask",
+					true);
 		}
 		return newTaskPresenter;
 	}
 
 	public TimerPresenter getTimerPresenter() {
 		if (timerPresenter == null) {
-			timerPresenter = (TimerPresenter) load("Timer", true);
+			timerPresenter = loadPresenter(TimerPresenter.class, "Timer", true);
 		}
 		return timerPresenter;
 	}
 
 	@Override
-	public void start(final Stage primaryStage) {
-		// add listeners
+	public void init() throws Exception {
 		getEventBus().addListener(timerListener);
-		primaryStage.getIcons().add(new Image("images/jajeczko2.png"));
-		primaryStage.setTitle("Jajeczko");
-		getMainPresenter().setMainView(primaryStage);
-		primaryStage.show();
-	}
-
-	@Override
-	public AbstractMainPresenter<JajeczkoService> getMainPresenter() {
-		if (mainPresenter == null) {
-			mainPresenter = (MainPresenter) load("Main", true);
-			mainPresenter.setTodayToDo(getTodayToDoPresenter());
-			mainPresenter.setProjects(getProjectsPresenter());
-		}
-		return mainPresenter;
+		super.init();
 	}
 
 	public TodayToDoPresenter getTodayToDoPresenter() {
 		if (todayToDoPresenter == null) {
-			todayToDoPresenter = (TodayToDoPresenter) load("TodayToDo", true);
+			todayToDoPresenter = loadPresenter(TodayToDoPresenter.class,
+					"TodayToDo", true);
 		}
 		return todayToDoPresenter;
 	}
 
 	public ProjectsPresenter getProjectsPresenter() {
 		if (projectsPresenter == null) {
-			projectsPresenter = (ProjectsPresenter) load("Projects", true);
+			projectsPresenter = loadPresenter(ProjectsPresenter.class,
+					"Projects", true);
 		}
 		return projectsPresenter;
 	}
@@ -103,7 +92,7 @@ public class App extends MVPApplication<JajeczkoService> {
 
 		getNewTaskPresenter().show();
 	}
-	
+
 	@Override
 	public void stop() throws Exception {
 		getService().dispose();
@@ -113,7 +102,7 @@ public class App extends MVPApplication<JajeczkoService> {
 
 	@Override
 	public JajeczkoService getService() {
-		if (service==null) {
+		if (service == null) {
 			logger.debug("Create JajeczkoServiceHSQL object");
 			emf = Persistence.createEntityManagerFactory("jajeczko");
 			JajeczkoServiceHSQL js = new JajeczkoServiceHSQL(getEventBus());
@@ -122,4 +111,14 @@ public class App extends MVPApplication<JajeczkoService> {
 		}
 		return this.service;
 	}
+
+	@Override
+	public MainWindowPresenter<JajeczkoService> initMainPresenter(Stage s) {
+		s.getIcons().add(new Image("images/jajeczko2.png"));
+		s.setTitle("Jajeczko v0.3");
+		mainPresenter = initPresenter(new MainPresenter(s), "Main", true);
+		mainPresenter.setTodayToDo(getTodayToDoPresenter());
+		mainPresenter.setProjects(getProjectsPresenter());
+		return mainPresenter;
+	}	
 }
