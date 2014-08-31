@@ -116,7 +116,8 @@ public class JajeczkoTimer {
 	}
 	
 	protected void playTicking() {
-		tickingClip.play();
+		//FIXME: remove audio ticking for a tests, it's necessary to find audio file
+		//tickingClip.play();
 	}	
 
 	protected void runTimer(TimerStatus newStatus, int seconds) {

@@ -1,10 +1,13 @@
 package org.miernik.jajeczko;
 
 import static org.junit.Assert.*;
+
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +35,7 @@ public class JajeczkoServiceHSQLTest {
 	}
 
 	@Test
-	public void testAddTask() {
+	public void testAddTask() throws AppException {
 		final String name = "test214";
 		final EntityManager em = emf.createEntityManager();
 		
@@ -47,7 +50,25 @@ public class JajeczkoServiceHSQLTest {
 	}
 	
 	@Test
-	public void testApproveTask() {
+	public void testAddTaskDuplicate() throws AppException {
+		final String name = "test2145542";
+		final EntityManager em = emf.createEntityManager();
+		
+		Task result = service.addTask(name);
+		assertNotNull(result);
+		Task result2 = null;
+		try {
+			result2 = service.addTask(name);
+			fail("it should be not possible to add duplicate task name");
+		} catch (Exception e) {
+			assertNull(result2);
+		}		
+		em.close();
+	}
+	
+	
+	@Test
+	public void testApproveTask() throws AppException {
 		final Task t = service.addTask("t1");
 		
 		service.approveTask(t);
@@ -55,7 +76,7 @@ public class JajeczkoServiceHSQLTest {
 	}
 
 	@Test
-	public void testCompleteTask() {
+	public void testCompleteTask() throws AppException {
 		final Task t = service.addTask("t1");
 		
 		service.completeTask(t);
@@ -63,7 +84,7 @@ public class JajeczkoServiceHSQLTest {
 	}
 	
 	@Test
-	public void testRejectTask() {
+	public void testRejectTask() throws AppException {
 		final Task t = service.addTask("t1");
 		
 		service.rejectTask(t);
@@ -71,7 +92,7 @@ public class JajeczkoServiceHSQLTest {
 	}
 
 	@Test
-	public void testSuspendTask() {
+	public void testSuspendTask() throws AppException {
 		final Task t = service.addTask("t1");
 		
 		service.suspendTask(t);
@@ -79,7 +100,7 @@ public class JajeczkoServiceHSQLTest {
 	}
 
 	@Test
-	public void testGetTodayTasks() {
+	public void testGetTodayTasks() throws AppException {
 		final Task t1 = service.addTask("t1");
 		service.approveTask(t1);
 		@SuppressWarnings("unused")
@@ -93,7 +114,24 @@ public class JajeczkoServiceHSQLTest {
 	}
 		
 	@Test
-	public void testGetStatus() {
+	public void testGetOpenedTasks() throws AppException {
+		@SuppressWarnings("unused")
+		final Task t1 = service.addTask("t1");
+		@SuppressWarnings("unused")
+		final Task t2 = service.addTask("t2");
+		final Task t3 = service.addTask("t3");
+		service.approveTask(t3);
+		@SuppressWarnings("unused")
+		final Task t4 = service.addTask("t4");
+		
+		List<Task> result = service.getOpenedTasks();
+		assertNotNull(result);
+		assertEquals(3, result.size());
+	}
+
+	
+	@Test
+	public void testGetStatus() throws AppException {
 		final Task t1 = service.addTask("t1");
 		service.approveTask(t1);
 		

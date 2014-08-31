@@ -1,5 +1,6 @@
 .root {
-    -fx-font-size: 14pt;
+    -fx-font-size: 12pt;
+    -fx-font-family: sans-serif;
 }
 
 #todayToDo {
@@ -57,4 +58,39 @@
 
 #Timer #stopButton {
 	-fx-text-alignment: center;	
+}
+
+/*  INBOX LIST  */
+#inboxList {
+}
+
+#inboxList #header {
+    -fx-text-fill: #000080;
+    -fx-font-size: 18pt;
+    -fx-padding: 3 0 3 5;
+}
+
+#inboxList .tool-bar {
+    -fx-padding: 3 10 5 8;
+    -fx-spacing: 3;
+}
+
+#inboxList .tool-bar .button {
+    -fx-padding: 8 8 5 8;
+}
+
+#inboxList #addButton {
+    -fx-graphic: url('../images/add_24.png');
+}
+
+#inboxList #approveButton {
+    -fx-graphic: url('../images/accept_24.png');
+}
+
+#inboxList #rejectButton {
+    -fx-graphic: url('../images/cancel_24.png');
+}
+
+#inboxList #pendingButton {
+    -fx-graphic: url('../images/hand_24.png');
 }

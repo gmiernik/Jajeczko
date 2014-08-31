@@ -76,8 +76,6 @@ public class NewTaskPresenter extends ModalWindowPresenter<JajeczkoService> {
 				@Override
 				protected Void call() throws Exception {
 					Task task = getService().addTask(taskNameField.getText());
-					//FIXME: temporary approve automatically until prepare 'waiting tasks' list
-					getService().approveTask(task);
 					getEventBus().fireEvent(new AddTaskEvent(task));
 					return null;
 				}

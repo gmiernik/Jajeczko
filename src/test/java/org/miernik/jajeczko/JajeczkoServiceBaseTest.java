@@ -73,6 +73,11 @@ public class JajeczkoServiceBaseTest {
 			public void startWorking(Task task) {
 				startWork = true;
 			}
+
+			@Override
+			public List<Task> getOpenedTasks() {
+				return null;
+			}
 		};
 		service = serviceBase;
 		new JFXPanel();

@@ -12,11 +12,17 @@ public interface JajeczkoService extends Service {
 	 */
 	List<Task> getTodayTasks();
 	/**
+	 * Generate list of new opened tasks with status: OPENED
+	 * @return
+	 */
+	List<Task> getOpenedTasks();
+	/**
 	 * Add new task to the collection. The status of the task will OPEN
 	 * @param name
 	 * @return
+	 * @throws AppException 
 	 */
-	Task addTask(String name);
+	Task addTask(String name) throws AppException;
 	/**
 	 * Approve the task to work. Status will change to APPROVAL
 	 * @param task

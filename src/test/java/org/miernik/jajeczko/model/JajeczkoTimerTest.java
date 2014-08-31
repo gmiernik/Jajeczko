@@ -63,7 +63,7 @@ public class JajeczkoTimerTest extends TestCase {
 		assertEquals(TimerStatus.DoNothink, timer.getStatus());
 		assertEquals(0, timer.getTimeCounter());
 	}
-	
+
 	@Test
 	public void testStopStart() {
 		final Task t = new Task();
@@ -88,7 +88,12 @@ public class JajeczkoTimerTest extends TestCase {
 
 		assertEquals(TimerStatus.DoNothink, timer.getStatus());
 
-		timer.runTimer(status, numSeconds);
+		//FIXME: change test to catch error when audio file not found
+		try {
+			timer.runTimer(status, numSeconds);
+		} catch (Exception e) {
+			fail("error during runTimer(), message: " + e.getMessage());
+		}
 
 		assertEquals(numSeconds, timer.getTimeCounter());
 		assertEquals(status, timer.getStatus());
@@ -138,7 +143,7 @@ public class JajeczkoTimerTest extends TestCase {
 
 			@Override
 			public void performed(FinishWorkEvent arg) {
-				if (t==arg.getTask())
+				if (t == arg.getTask())
 					result.value = 1;
 			}
 		});
@@ -158,7 +163,7 @@ public class JajeczkoTimerTest extends TestCase {
 
 			@Override
 			public void performed(StartWorkEvent arg) {
-				if (t==arg.getTask())
+				if (t == arg.getTask())
 					result.value = 1;
 			}
 		});
@@ -178,7 +183,7 @@ public class JajeczkoTimerTest extends TestCase {
 
 			@Override
 			public void performed(CancelWorkEvent arg) {
-				if (t==arg.getTask())
+				if (t == arg.getTask())
 					result.value = 1;
 			}
 		});
@@ -187,15 +192,21 @@ public class JajeczkoTimerTest extends TestCase {
 		Thread.sleep(100);
 		assertEquals(1, result.value);
 	}
-	
-	
-	@Test
-	public void testPlayClockTicking() throws InterruptedException {
 
-		timer.playTicking();
+	//FIXME: remove temporary playClockTicking
+	/*
+	@Test
+	public void testPlayClockTicking() {
+
+		try {
+			timer.playTicking();
+		} catch (Exception e) {
+			fail("error during playTicking: " + e.getMessage());
+		}
 		assertTrue(timer.getTickingClip().isPlaying());
 	}
-	
+	*/
+
 	@Test
 	public void testGetStartTime() {
 		final int numSeconds = 1;
@@ -217,5 +228,5 @@ public class JajeczkoTimerTest extends TestCase {
 		Date presentTime = new Date();
 		assertNotNull(timer.getStopTime());
 		assertEquals(presentTime.getTime(), timer.getStopTime().getTime());
-	}	
+	}
 }

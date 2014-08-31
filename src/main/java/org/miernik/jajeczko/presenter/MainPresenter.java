@@ -36,11 +36,14 @@ public class MainPresenter extends MainWindowPresenter<JajeczkoService> {
 	@FXML
 	private MenuItem menuAbout;
 	@FXML
+	private MenuItem menuInboxList;
+	@FXML
 	private MenuItem menuTodayToDo;
 	@FXML
 	private MenuItem menuProjects;
 	@FXML
 	private AnchorPane mainContent;
+	private Presenter inboxList;
 	private Presenter todayToDo;
 	private Presenter projects;
 	private double width;
@@ -86,6 +89,13 @@ public class MainPresenter extends MainWindowPresenter<JajeczkoService> {
 				setMainContent(getProjectsView());
 			}
 		});
+		menuInboxList.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				setMainContent(inboxList);
+			}
+		});
 		menuTodayToDo.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -106,7 +116,7 @@ public class MainPresenter extends MainWindowPresenter<JajeczkoService> {
 	protected void onShow() {
 		logger.debug("run onShow method");
 		if (mainContent.getChildren().isEmpty())
-			setMainContent(getTodayToDo());
+			setMainContent(getInboxList());
 		if (width!=0 && height!=0) {
 			logger.debug("restore window size");
 			getWindow().setHeight(height);
@@ -125,5 +135,13 @@ public class MainPresenter extends MainWindowPresenter<JajeczkoService> {
 		ObservableList<Node> list = this.mainContent.getChildren();
 		list.clear();
 		list.add(p.getView());
+	}
+
+	public Presenter getInboxList() {
+		return inboxList;
+	}
+
+	public void setInboxList(Presenter inboxList) {
+		this.inboxList = inboxList;
 	}
 }

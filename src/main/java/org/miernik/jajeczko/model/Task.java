@@ -30,7 +30,10 @@ import org.miernik.jajeczko.model.Project;
  */
 @Entity
 @Table(name = "TASKS")
-@NamedQueries(@NamedQuery(name = "TodayTasks", query = "SELECT t FROM Task t WHERE t.status.id IN (2, 3)"))
+@NamedQueries({
+		@NamedQuery(name = "TodayTasks", query = "SELECT t FROM Task t WHERE t.status.id IN (2, 3)"),
+		@NamedQuery(name = "OpenedTasks", query = "SELECT t FROM Task t WHERE t.status.id = 1"),
+		@NamedQuery(name = "TaskByName", query = "SELECT t FROM Task t WHERE t.name = :name") })
 public class Task {
 
 	private Category category;
@@ -81,7 +84,7 @@ public class Task {
 		this.name.set(name);
 	}
 
-	@OneToOne(cascade={CascadeType.ALL})
+	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "STATUS_ID", referencedColumnName = "ID")
 	public Status getStatus() {
 		return status;
@@ -89,17 +92,17 @@ public class Task {
 
 	public void setStatus(Status status) {
 		this.status = status;
-		if (status==null)
+		if (status == null)
 			statusName.set(null);
 		else
 			statusName.set(status.getName());
 	}
-	
+
 	public StringProperty statusNameProperty() {
 		return statusName;
 	}
 
-	@OneToMany(cascade={CascadeType.ALL})
+	@OneToMany(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "TASK_ID", referencedColumnName = "ID")
 	public Collection<Egg> getEggs() {
 		return eggs;

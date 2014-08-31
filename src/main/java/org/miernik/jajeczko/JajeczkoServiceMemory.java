@@ -66,4 +66,11 @@ public class JajeczkoServiceMemory extends JajeczkoServiceBase {
 	@Override
 	public void startWorking(Task task) {
 	}
+
+
+	@Override
+	public List<Task> getOpenedTasks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

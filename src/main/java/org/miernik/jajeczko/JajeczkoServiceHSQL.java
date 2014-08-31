@@ -42,7 +42,7 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 			initiated = true;
 		}
 	}
-	
+
 	private Status persistStatus(Status s) {
 		Status result = entityManager.find(Status.class, s.getId());
 		if (result != null) {
@@ -78,10 +78,12 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 	}
 
 	@Override
-	public Task addTask(String name) {
+	public Task addTask(String name) throws AppException {
 		logger.debug("run addTask()");
 		if (!initiated)
 			init();
+		if (taskExists(name)) 
+			throw new AppException("Cannot add duplicate task name: " + name);
 		Task t = new Task(name);
 		t.setStatus(statusOpen);
 		if (entityManager.contains(statusOpen))
@@ -94,13 +96,24 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 		return t;
 	}
 
+	protected boolean taskExists(String name) {
+		logger.debug("run taskExists()");
+		if (!initiated)
+			init();
+		Query q = entityManager.createNamedQuery("TaskByName");
+		q.setParameter("name", name);
+		@SuppressWarnings("unchecked")
+		List<Task> tasks = q.getResultList();
+		return tasks.size() != 0;
+	}
+
 	protected void updateTask(Task t) {
 		if (!initiated)
 			init();
 		entityManager.getTransaction().begin();
 		entityManager.persist(t);
 		entityManager.getTransaction().commit();
-		logger.debug("fire: UpdateTaskEvent, "+t);
+		logger.debug("fire: UpdateTaskEvent, " + t);
 		getEventBus().fireEvent(new UpdateTaskEvent(t));
 	}
 
@@ -126,7 +139,7 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 		task.setStatus(statusPending);
 		updateTask(task);
 	}
-	
+
 	@Override
 	public void startWorking(Task task) {
 		task.setStatus(statusInProgress);
@@ -134,9 +147,19 @@ public class JajeczkoServiceHSQL extends JajeczkoServiceBase {
 	}
 
 	@Override
-	public void postponeTask(Task task) {		
+	public void postponeTask(Task task) {
 		task.setStatus(statusSomeday);
 		updateTask(task);
+	}
+
+	@Override
+	public List<Task> getOpenedTasks() {
+		if (!initiated)
+			init();
+		Query q = entityManager.createNamedQuery("OpenedTasks");
+		@SuppressWarnings("unchecked")
+		List<Task> tasks = q.getResultList();
+		return tasks;
 	}
 
 }

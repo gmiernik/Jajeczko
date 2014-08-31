@@ -12,19 +12,14 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" AnchorPane.topAnchor="0.0"
 	AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"
-	AnchorPane.bottomAnchor="0.0" fx:id="todayToDo">
+	AnchorPane.bottomAnchor="0.0" fx:id="inboxList">
 	<children>
-		<Label fx:id="header" text="%TodayToDo" />
+		<Label fx:id="header" text="%Header" />
 		<ToolBar fx:id="test">
 			<Button fx:id="addButton" />
-			<Button fx:id="startButton">
+			<Button fx:id="approveButton">
 				<tooltip>
-					<Tooltip text="%StartTooltip" />
-				</tooltip>
-			</Button>
-			<Button fx:id="doneButton">
-				<tooltip>
-					<Tooltip text="%DoneTooltip" />
+					<Tooltip text="%ApproveTooltip" />
 				</tooltip>
 			</Button>
 			<Button fx:id="rejectButton">

@@ -20,6 +20,7 @@
                 </Menu>
                 <Menu text="%MenuView">
                     <items>
+                        <MenuItem fx:id="menuInboxList" text="%MenuInboxList" />
                         <MenuItem fx:id="menuTodayToDo" text="%MenuTodayToDo" />
                         <MenuItem fx:id="menuProjects" text="%MenuProjects" />
                         <MenuItem text="%MenuSomeday" />
@@ -32,7 +33,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <AnchorPane fx:id="mainContent" AnchorPane.topAnchor="25.0" 
+        <AnchorPane fx:id="mainContent" AnchorPane.topAnchor="35.0" 
                     AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"
                     AnchorPane.bottomAnchor="0.0">
             <children>

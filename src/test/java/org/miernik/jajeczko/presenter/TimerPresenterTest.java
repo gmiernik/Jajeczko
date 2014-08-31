@@ -2,7 +2,7 @@ package org.miernik.jajeczko.presenter;
 
 import java.util.List;
 import javafx.embed.swing.JFXPanel;
-import org.jodah.concurrentunit.junit.ConcurrentTestCase;
+import org.jodah.concurrentunit.ConcurrentTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -64,6 +64,11 @@ public class TimerPresenterTest extends ConcurrentTestCase {
 
 			@Override
 			public void startWorking(Task task) {
+			}
+
+			@Override
+			public List<Task> getOpenedTasks() {
+				return null;
 			}
 		};
 	}

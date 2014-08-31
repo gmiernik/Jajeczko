@@ -24,7 +24,7 @@ public class JajeczkoServiceMemoryTest extends TestCase {
 	}
 	
 	@Test
-	public void testAddTask() {
+	public void testAddTask() throws AppException {
 		final String name = "test123";
 
 		Task t = service.addTask(name);
@@ -36,7 +36,7 @@ public class JajeczkoServiceMemoryTest extends TestCase {
 	}
 
 	@Test
-	public void testAddDuplicateTask() {
+	public void testAddDuplicateTask() throws AppException {
 		final String name = "test123";
 
 		Task t = service.addTask(name);

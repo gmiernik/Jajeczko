@@ -6,10 +6,13 @@ package org.miernik.jajeczko;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 import org.apache.log4j.Logger;
 import org.miernik.jajeczko.event.StartWorkEvent;
+import org.miernik.jajeczko.presenter.InboxListPresenter;
 import org.miernik.jajeczko.presenter.MainPresenter;
 import org.miernik.jajeczko.presenter.NewTaskPresenter;
 import org.miernik.jajeczko.presenter.ProjectsPresenter;
@@ -45,6 +48,7 @@ public class App extends MVPApplication<JajeczkoService> {
 
 	private EntityManagerFactory emf;
 	private MainPresenter mainPresenter;
+	private InboxListPresenter inboxListPresenter;
 	private TodayToDoPresenter todayToDoPresenter;
 	private ProjectsPresenter projectsPresenter;
 	private NewTaskPresenter newTaskPresenter;
@@ -80,6 +84,14 @@ public class App extends MVPApplication<JajeczkoService> {
 		return todayToDoPresenter;
 	}
 
+	public InboxListPresenter getInboxListPresenter() {
+		if (inboxListPresenter == null) {
+			inboxListPresenter = loadPresenter(InboxListPresenter.class,
+					"InboxList", true);
+		}
+		return inboxListPresenter;
+	}
+	
 	public ProjectsPresenter getProjectsPresenter() {
 		if (projectsPresenter == null) {
 			projectsPresenter = loadPresenter(ProjectsPresenter.class,
@@ -119,6 +131,7 @@ public class App extends MVPApplication<JajeczkoService> {
 		mainPresenter = initPresenter(new MainPresenter(s), "Main", true);
 		mainPresenter.setTodayToDo(getTodayToDoPresenter());
 		mainPresenter.setProjects(getProjectsPresenter());
+		mainPresenter.setInboxList(getInboxListPresenter());
 		return mainPresenter;
 	}	
 }
